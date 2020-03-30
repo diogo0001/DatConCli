@@ -1,27 +1,26 @@
 package DatConRecs.FromViewer;
 
-import java.nio.ByteBuffer;
-
 import DatConRecs.*;
 import Files.ConvertDat;
 import Files.ConvertDat.lineType;
 import Files.DatConLog;
+import Files.Persist;
 
-public class svn_info_65534 extends Record {
+public class console_52719 extends Record {
+    String text = "";
 
-    ByteBuffer payload = null;
-
-    protected String payloadString;
-
-    public svn_info_65534(ConvertDat convertDat) {
-        super(convertDat, 65534, -1);
+    public console_52719(ConvertDat convertDat) {
+        super(convertDat, 52719, -1);
     }
 
     @Override
     public void process(Payload _payload) {
         super.process(_payload);
         try {
-
+            String payloadString = _payload.getString();
+            if (Persist.EXPERIMENTAL_DEV) {
+                System.out.println("console_52719 " + payloadString);
+            }
         } catch (Exception e) {
             RecordException(e);
         }

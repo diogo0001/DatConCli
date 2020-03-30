@@ -1,27 +1,22 @@
 package DatConRecs.FromViewer;
 
-import java.nio.ByteBuffer;
-
 import DatConRecs.*;
 import Files.ConvertDat;
 import Files.ConvertDat.lineType;
 import Files.DatConLog;
 
-public class svn_info_65534 extends Record {
+public class fly_log_32768 extends Record {
+    String text = "";
 
-    ByteBuffer payload = null;
-
-    protected String payloadString;
-
-    public svn_info_65534(ConvertDat convertDat) {
-        super(convertDat, 65534, -1);
+    public fly_log_32768(ConvertDat convertDat) {
+        super(convertDat, 32768, -1);
+        setRecType(RecType.STRING);
     }
 
     @Override
     public void process(Payload _payload) {
         super.process(_payload);
         try {
-
         } catch (Exception e) {
             RecordException(e);
         }

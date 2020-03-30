@@ -1,11 +1,11 @@
-package src.DatConRecs.FromViewer;
+package DatConRecs.FromViewer;
 
 import java.nio.ByteBuffer;
 
-import src.DatConRecs.*;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.*;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class svn_info_65534 extends Record {
 

@@ -1,9 +1,9 @@
 
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.GpsGroup;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
+import DatConRecs.GpsGroup;
+import DatConRecs.Payload;
+import Files.ConvertDat;
 
 public class GPS_2096 extends GpsGroup {
 

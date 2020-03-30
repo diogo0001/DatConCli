@@ -1,11 +1,11 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Record;
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.Record;
+import Files.AxesAndSigs;
+import Files.ConvertDat;
+import Files.Signal;
+import Files.Units;
+import Files.ConvertDat.lineType;
 
 public class RecBatt extends Record {
 
@@ -53,22 +53,6 @@ public class RecBatt extends Record {
 
     public boolean valid = false;
 
-    protected Signal battPercent = null;
-
-    protected Signal currentSig = null;
-
-    protected Signal cellVoltSig = null;
-
-    protected Signal batteryTempSig = null;
-
-    protected Signal batteryFCC = null;
-
-    protected Signal batteryRemCap = null;
-
-    protected Signal voltsSig = null;
-
-    protected Signal wattsSig = null;
-
     protected Signal statusSig = Signal.SeriesIntExperimental("Battery:Status",
             "Battery Status", null, Units.noUnits);
 
@@ -81,39 +65,13 @@ public class RecBatt extends Record {
     //        }
     //    }
 
-    public RecBatt(ConvertDat convertDat, int id, int length, int index) {
+    public RecBatt(ConvertDat convertDat, int id, int length) {
         super(convertDat, id, length);
         numCells = convertDat.getDatFile().getNumBattCells();
         volt = new float[numCells];
         for (int i = 0; i < numCells; i++) {
             volt[i] = 0.0f;
         }
-        statusSig = Signal.SeriesIntExperimental("Battery", index,
-                "Battery Status", null, Units.noUnits);
-        battPercent = Signal.SeriesInt("Battery", index, "Battery Percentage",
-                null, Units.percentage);
-
-        currentSig = Signal.SeriesFloat("Battery", index, "Current", null,
-                Units.amps);
-
-        cellVoltSig = Signal.SeriesFloat("Battery", index, "Cell Volts",
-                AxesAndSigs.cellVoltsAxis, Units.volts);
-
-        batteryTempSig = Signal.SeriesFloat("Battery", index, "Battery Temp",
-                null, Units.degreesC);
-
-        batteryFCC = Signal.SeriesFloat("Battery", index,
-                "Battery Full Charge Capacity", null, Units.mAh);
-
-        batteryRemCap = Signal.SeriesFloat("Battery", index,
-                "Battery Remaining Cap", null, Units.mAh);
-
-        voltsSig = Signal.SeriesFloat("Battery", index, "Volts", null,
-                Units.volts);
-
-        wattsSig = Signal.SeriesFloat("Battery", index, "Watts", null,
-                Units.watts);
-
     }
 
     protected void init() {
@@ -124,7 +82,7 @@ public class RecBatt extends Record {
         maxWatts = (float) -1.0;
         minWatts = Float.MAX_VALUE;
     }
-
+    
     protected float maxVolt(float... floatVolts) {
         float retv = -Float.MAX_VALUE;
         for (float volts : floatVolts) {
@@ -163,6 +121,7 @@ public class RecBatt extends Record {
         return max;
     }
 
+
     protected void processComputedBatt() {
         if (totalVolts > maxVolts)
             maxVolts = totalVolts;
@@ -188,38 +147,22 @@ public class RecBatt extends Record {
     }
 
     protected void printComputedBattCols(lineType lineT) throws Exception {
-        printCsvValue(voltDiff, voltsSig, "voltSpread", lineT, valid);
-        printCsvValue(watts, wattsSig, "watts", lineT, valid);
-        printCsvValue(minCurrent, currentSig, "minCurrent", lineT, valid);
-        printCsvValue(maxCurrent, currentSig, "maxCurrent", lineT, valid);
-        printCsvValue(avgCurrent, currentSig, "avgCurrent", lineT, valid);
+        //        printCsvValue(crrnt, AxesAndSigs.currentSig, "", lineT, valid);
+        //        printCsvValue(totalVolts, AxesAndSigs.voltsSig, "total", lineT, valid);
+        printCsvValue(voltDiff, AxesAndSigs.voltsSig, "spread", lineT, valid);
+        printCsvValue(watts, AxesAndSigs.wattsSig, "", lineT, valid);
+        //        printCsvValue(temp, AxesAndSigs.batteryTempSig, "", lineT, valid);
 
-        printCsvValue(minVolts, voltsSig, "minVolts", lineT, valid);
-        printCsvValue(maxVolts, voltsSig, "maxVolts", lineT, valid);
-        printCsvValue(avgVolts, voltsSig, "avgVolts", lineT, valid);
+        printCsvValue(minCurrent, AxesAndSigs.currentSig, "min", lineT, valid);
+        printCsvValue(maxCurrent, AxesAndSigs.currentSig, "max", lineT, valid);
+        printCsvValue(avgCurrent, AxesAndSigs.currentSig, "avg", lineT, valid);
 
-        printCsvValue(minWatts, wattsSig, "minWatts", lineT, valid);
-        printCsvValue(maxWatts, wattsSig, "maxWatts", lineT, valid);
-        printCsvValue(avgWatts, wattsSig, "avgWatts", lineT, valid);
+        printCsvValue(minVolts, AxesAndSigs.voltsSig, "min", lineT, valid);
+        printCsvValue(maxVolts, AxesAndSigs.voltsSig, "max", lineT, valid);
+        printCsvValue(avgVolts, AxesAndSigs.voltsSig, "avg", lineT, valid);
+
+        printCsvValue(minWatts, AxesAndSigs.wattsSig, "min", lineT, valid);
+        printCsvValue(maxWatts, AxesAndSigs.wattsSig, "max", lineT, valid);
+        printCsvValue(avgWatts, AxesAndSigs.wattsSig, "avg", lineT, valid);
     }
-
-    //    protected void printComputedBattCols(lineType lineT) throws Exception {
-    //        //        printCsvValue(crrnt, AxesAndSigs.currentSig, "", lineT, valid);
-    //        //        printCsvValue(totalVolts, AxesAndSigs.voltsSig, "total", lineT, valid);
-    //        printCsvValue(voltDiff, AxesAndSigs.voltsSig, "spread", lineT, valid);
-    //        printCsvValue(watts, AxesAndSigs.wattsSig, "", lineT, valid);
-    //        //        printCsvValue(temp, AxesAndSigs.batteryTempSig, "", lineT, valid);
-    //
-    //        printCsvValue(minCurrent, AxesAndSigs.currentSig, "min", lineT, valid);
-    //        printCsvValue(maxCurrent, AxesAndSigs.currentSig, "max", lineT, valid);
-    //        printCsvValue(avgCurrent, AxesAndSigs.currentSig, "avg", lineT, valid);
-    //
-    //        printCsvValue(minVolts, AxesAndSigs.voltsSig, "min", lineT, valid);
-    //        printCsvValue(maxVolts, AxesAndSigs.voltsSig, "max", lineT, valid);
-    //        printCsvValue(avgVolts, AxesAndSigs.voltsSig, "avg", lineT, valid);
-    //
-    //        printCsvValue(minWatts, AxesAndSigs.wattsSig, "min", lineT, valid);
-    //        printCsvValue(maxWatts, AxesAndSigs.wattsSig, "max", lineT, valid);
-    //        printCsvValue(avgWatts, AxesAndSigs.wattsSig, "avg", lineT, valid);
-    //    }
 }

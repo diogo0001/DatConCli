@@ -16,12 +16,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class RecAirComp32_10099 extends RecAirComp {
 

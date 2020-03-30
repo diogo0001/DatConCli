@@ -1,29 +1,25 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.Persist;
-import src.Files.Signal;
-import src.Files.Units;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.Persist;
+import Files.Signal;
+import Files.Units;
 
 public class MagRawGroup extends Record {
 
     public short magX = 0;
-
     public short magY = 0;
-
     public short magZ = 0;
-
     public boolean valid;
-
-    private int index;
+    //private int index;
 
     public MagRawGroup(ConvertDat convertDat, int id, int length, int index) {
         super(convertDat, id, length);
-        this.index = index;
+        //this.index = index;
         magRawSig = Signal.SeriesFloat("Mag" + "(" + index + ")",
                 "Magnetometer", null, Units.aTesla);
     }

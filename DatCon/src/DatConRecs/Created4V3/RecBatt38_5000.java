@@ -16,14 +16,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.RecBatt;
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import Files.ConvertDat;
 
 // 50 HZ
 //length 47
@@ -32,21 +27,16 @@ public class RecBatt38_5000 extends RecBatt38_500X {
 
     public static RecBatt38_5000 current = null;
 
+//    private float fcc = 0.0f;
+//    private float remcap = 0.0f;
+//    private int status1 = 0;
+//    private int status2 = 0;
+//    private int status3 = 0;
+//    private int status4 = 0;
+
     public RecBatt38_5000(ConvertDat convertDat) {
         super(convertDat, 5000, 0);
     }
-
-    private float fcc = 0.0f;
-
-    private float remcap = 0.0f;
-
-    private int status1 = 0;
-
-    private int status2 = 0;
-
-    private int status3 = 0;
-
-    private int status4 = 0;
 
 //    public void process(Payload _payload) {
 //        super.process(_payload);

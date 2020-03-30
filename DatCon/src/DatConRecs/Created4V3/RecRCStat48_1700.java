@@ -17,13 +17,13 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
 // 50 Hz
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.ConvertDat.lineType;
 
 public class RecRCStat48_1700 extends RCStatus {
 

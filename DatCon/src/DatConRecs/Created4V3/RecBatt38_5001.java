@@ -1,12 +1,6 @@
+package DatConRecs.Created4V3;
 
-package src.DatConRecs.Created4V3;
-
-import src.DatConRecs.Payload;
-import src.DatConRecs.RecBatt;
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import Files.ConvertDat;
 
 public class RecBatt38_5001 extends RecBatt38_500X {
 
@@ -15,9 +9,9 @@ public class RecBatt38_5001 extends RecBatt38_500X {
     public RecBatt38_5001(ConvertDat convertDat) {
         super(convertDat, 5001, 1);
     }
-//
-//    public short batteryPercent = 0;
 
+//    public short batteryPercent = 0;
+//
 //    public void process(Payload _payload) {
 //        super.process(_payload);
 //        try {

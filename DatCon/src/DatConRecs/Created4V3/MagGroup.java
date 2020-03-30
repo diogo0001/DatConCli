@@ -16,18 +16,18 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.RecIMU;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.MagYaw;
-import src.Files.Persist;
-import src.Files.Signal;
-import src.Files.Units;
+import DatConRecs.Payload;
+import DatConRecs.RecIMU;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.MagYaw;
+import Files.Persist;
+import Files.Signal;
+import Files.Units;
 
 public class MagGroup extends Record {
 

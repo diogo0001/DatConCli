@@ -1,10 +1,10 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.BattInfo;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.BattInfo;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class BattInfo_38_1710 extends BattInfo {
     protected boolean valid = false;

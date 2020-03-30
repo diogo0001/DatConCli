@@ -1,9 +1,9 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.IMUEX;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.IMUEX;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
 
 public class IMUEX40 extends IMUEX {
 

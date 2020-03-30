@@ -1,49 +1,32 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.*;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.Signal;
+import Files.Units;
 
 public class BatBox32_500X extends RecBatt {
-    protected boolean valid = false;
 
+	protected boolean valid = false;
     protected int time = (int) 0;
-
     protected short rec_data = (short) 0;
-
     protected short soc = (short) 0;
-
     protected int cell1 = (int) 0;
-
     protected int cell2 = (int) 0;
-
     protected int cell3 = (int) 0;
-
     protected int cell4 = (int) 0;
-
     protected int cell5 = (int) 0;
-
     protected int cell6 = (int) 0;
-
     protected short pro_curr = (short) 0;
-
     protected short current = (short) 0;
-
     protected int pack_vol = (int) 0;
-
     protected short temp1 = (short) 0;
-
     protected short temp2 = (short) 0;
-
     protected int flag = (int) 0;
-
     protected long user_def = (long) 0;
 
     public BatBox32_500X(ConvertDat convertDat, int id, int index) {
-        super(convertDat, id, 32, index);
+        super(convertDat, id, /*32,*/ index);
         BatBoxIntSig = Signal.SeriesInt("Battery", index, "", null,
                 Units.noUnits);
 
@@ -89,7 +72,7 @@ public class BatBox32_500X extends RecBatt {
     //protected Signal BatBoxFloatSig = null;
 
     //protected Signal BatBoxDoubleSig = null;
-    public void printCols(lineType lineT) {
+/*  public void printCols(lineType lineT) {
 
         try {
             for (int i = 1; i <= _datFile.getNumBattCells(); i++) {
@@ -117,6 +100,6 @@ public class BatBox32_500X extends RecBatt {
         } catch (Exception e) {
             DatConLog.Exception(e);
         }
-    }
+    }*/
 
 }

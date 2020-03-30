@@ -17,14 +17,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.Signal;
+import Files.ConvertDat.lineType;
 
 public class RecSVOAVOID15_1121 extends Record {
     protected boolean valid = false;

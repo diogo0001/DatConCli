@@ -1,8 +1,8 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.MotorControl;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
+import DatConRecs.MotorControl;
+import DatConRecs.Payload;
+import Files.ConvertDat;
 
 public class MotorCtrl16_1307 extends MotorControl {
 

@@ -17,15 +17,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
+import Files.ConvertDat.lineType;
 
 public class RecOA27_100 extends Record {
     public boolean frontDistanceIsValid() {

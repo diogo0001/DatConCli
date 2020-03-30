@@ -1,11 +1,10 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
 import java.util.Vector;
 
-import src.DatConRecs.RecIMU;
-import src.Files.RecClassSpec;
+import Files.RecClassSpec;
 
-public class Dictionary extends src.DatConRecs.Dictionary {
+public class Dictionary extends DatConRecs.Dictionary {
 
     public static Vector<RecClassSpec> entries = new Vector<RecClassSpec>();
     static {

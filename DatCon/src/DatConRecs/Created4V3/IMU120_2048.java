@@ -1,13 +1,13 @@
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.GoTxt50_12;
-import src.DatConRecs.Payload;
-import src.DatConRecs.RecIMU;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
+import DatConRecs.GoTxt50_12;
+import DatConRecs.Payload;
+import DatConRecs.RecIMU;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
 
 public class IMU120_2048 extends RecIMU {
     public IMU120_2048(ConvertDat convertDat) {

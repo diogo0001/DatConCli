@@ -17,10 +17,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.DatConRecs.Created4V3;
+package DatConRecs.Created4V3;
 
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
+import DatConRecs.Payload;
+import Files.ConvertDat;
 
 // Slightly different from Record144_106
 public class RecMotor169_10090 extends Motor {

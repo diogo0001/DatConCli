@@ -16,7 +16,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package src.Files;
+package Files;
 
 import java.awt.Color;
 import java.io.File;
@@ -32,84 +32,83 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
-import src.DatConRecs.Record;
-import src.Files.Corrupted.Type;
-import src.Files.DatHeader.AcType;
-import src.V1.Files.DatFileV1;
-import src.V3.Files.DatFileV3;
-import src.apps.DatCon;
+import App.DatConPanel;
+import DatConRecs.Record;
+import Files.Corrupted.Type;
+import Files.DatHeader.AcType;
+import Files.V1.DatFileV1;
+import Files.V3.DatFileV3;
 
 public class DatFile {
 
-    protected final static int headerLength = 10;
+	static protected final int headerLength = 10;
+	static protected final int chksumLength = 2;
 
-    protected final static int chksumLength = 2;
-
-    protected int startOfRecords = 128;
-
-    public void setStartOfRecords(int startOfRecords) {
-        this.startOfRecords = startOfRecords;
-    }
-
-    protected MappedByteBuffer memory = null;
-
-    private String acTypeName = "";
-
-    protected long filePos = 0;
-
-    protected File file = null;
-
-    protected FileInputStream inputStream = null;
-
-    protected FileChannel _channel = null;
-
-    protected long fileLength = 0;
-
-    public static String firmwareDate = "";
-
-    protected int numCorrupted = 0;
-
-    protected long numRecs = 0;
-
-    protected AnalyzeDatResults results = null;
-
-    public long startOfRecord = 0;
-
-    public long lowestTickNo = -1;
-
-    public long highestTickNo = -1;
-
-    public long firstMotorStartTick = 0;
-
-    public long lastMotorStopTick = -1;
-
-    public long flightStartTick = -1;
-
-    public long gpsLockTick = -1;
-
-    protected int numBattCells = 0;
-
-    public DatHeader.AcType acType = DatHeader.AcType.UNKNOWN;
-
-    protected long lastRecordTickNo = 0;
-
-    public static DecimalFormat timeFormat = new DecimalFormat("###.000",
+    static protected DatConPanel _datCon;
+    static private DatFile _datFile;
+    static public String firmwareDate = "";
+    static public DecimalFormat timeFormat = new DecimalFormat("###.000",
             new DecimalFormatSymbols(Locale.US));
 
-    private static DatFile datFile;
-
+    protected int startOfRecords = 128;
+    protected MappedByteBuffer memory = null;
+    private String acTypeName = "";
+    protected long filePos = 0;
+    protected File file = null;
+    protected FileInputStream inputStream = null;
+    protected FileChannel _channel = null;
+    protected long fileLength = 0;
+    protected int numCorrupted = 0;
+    protected long numRecs = 0;
+    protected AnalyzeDatResults results = null;
+    public long startOfRecord = 0;
+    public long lowestTickNo = -1;
+    public long highestTickNo = -1;
+    public long firstMotorStartTick = 0;
+    public long lastMotorStopTick = -1;
+    public long flightStartTick = -1;
+    public long gpsLockTick = -1;
+    protected int numBattCells = 0;
+    public DatHeader.AcType acType = DatHeader.AcType.UNKNOWN;
+    protected long lastRecordTickNo = 0;
     double clockRate = 600;
-
     private DatHeader datHeader;
-
     private HashMap<Integer, RecSpec> recsInDat = new HashMap<Integer, RecSpec>();
-
     public long _tickNo = 0;
-
     public int _type = 0;
+
+    public DatFile(DatConPanel datCon) {
+    	_datCon = datCon;
+    }
+
+    public DatFile(DatConPanel datCon, File _file) throws NotDatFile, FileNotFoundException {
+    	this(datCon);
+        datHeader = new DatHeader(this);
+        file = _file;
+        results = new AnalyzeDatResults();
+        fileLength = file.length();
+        inputStream = new FileInputStream(file);
+        _channel = inputStream.getChannel();
+        try {
+            memory = _channel.map(FileChannel.MapMode.READ_ONLY, 0, fileLength);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        memory.order(ByteOrder.LITTLE_ENDIAN);
+        acType = datHeader.getAcType();
+        //acTypeName = DatHeader.toString(acType);
+    }
+
+    public DatFile(DatConPanel datCon, String fileName) throws IOException, NotDatFile {
+        this(datCon, new File(fileName));
+    }
 
     public HashMap<Integer, RecSpec> getRecsInDat() {
         return recsInDat;
+    }
+
+    public void setStartOfRecords(int startOfRecords) {
+        this.startOfRecords = startOfRecords;
     }
 
     public void addRecInDat(int type, int length) {
@@ -123,11 +122,7 @@ public class DatFile {
         recsInDat.clear();
     }
 
-    public DatFile(String fileName) throws IOException, NotDatFile {
-        this(new File(fileName));
-    }
-
-    public static DatFile createDatFile(String datFileName)
+    public static DatFile createDatFile(DatConPanel datCon, String datFileName)
             throws NotDatFile, IOException {
         byte arra[] = new byte[256];
         //if (true )return (new DatFileV3(datFileName));
@@ -136,13 +131,14 @@ public class DatFile {
         FileInputStream bfr = new FileInputStream(new File(datFileName));
         bfr.read(arra, 0, 256);
         bfr.close();
-        String headerString = new String(arra, 0, 21);
-        if (!(headerString.substring(16, 21).equals("BUILD"))) {
+        String headerString = new String(arra, 16, 26); // Build w/date-time string
+        if (!headerString.substring(0, 22).startsWith("BUILD ")) {
+        	// Let's assume a valid .dat file
             if (Persist.invalidStructOK) {
                 DatConLog.Log("createDatFile invalid header - proceeding");
-                datFile = new DatFileV3(datFileName);
-                datFile.setStartOfRecords(256);
-                return datFile;
+                _datFile = new DatFileV3(datCon, datFileName);
+                _datFile.setStartOfRecords(256);
+                return _datFile;
             }
             if (headerString.substring(0, 4).equals("LOGH")) {
                 throw new NotDatFile("Probably an encrypted .DAT");
@@ -150,30 +146,16 @@ public class DatFile {
             throw new NotDatFile();
         }
         if ((new String(arra, 242, 10).equals("DJI_LOG_V3"))) {
-            datFile = new DatFileV3(datFileName);
-            datFile.setStartOfRecords(256);
-        } else {
-            datFile = new DatFileV1(datFileName);
-            datFile.setStartOfRecords(128);
+            _datFile = new DatFileV3(datCon, datFileName);
+            _datFile.setStartOfRecords(256);
+        } else { // Assume version 1
+            _datFile = new DatFileV1(datCon, datFileName);
+            _datFile.setStartOfRecords(128);
         }
-        return datFile;
+        return _datFile;
     }
 
-    public static boolean isDatFile(String datFileName) {
-        byte arra[] = new byte[256];
-        try {
-            FileInputStream bfr = new FileInputStream(new File(datFileName));
-            bfr.read(arra, 0, 256);
-            bfr.close();
-            if ((new String(arra, 16, 5).equals("BUILD"))) {
-                return true;
-            }
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
-    public static DatFile createDatFile(String datFileName, final DatCon datCon)
+    public static DatFile createDatFile(String datFileName, final DatConPanel datCon)
             throws NotDatFile, IOException {
         if (DJIAssistantFile.isDJIDat(new File(datFileName))) {
             if (Persist.autoTransDJIAFiles) {
@@ -197,19 +179,19 @@ public class DatFile {
                         DatConLog.Log(
                                 "DJIAssistantFile.extractFirst:moreThanOne");
                         boolean moreThanOnePopup = DatConPopups
-                                .moreThanOne(DatCon.frame);
+                                .moreThanOne(datCon.getFrame());
                         if (moreThanOnePopup) {
-                            return new DatFileV3(result.getFile());
+                            return new DatFileV3(datCon, result.getFile());
                         } else {
                             return null;
                         }
                     } else if (result.none()) {
                         DatConLog.Log("DJIAssistantFile.extractFirst:none");
-                        DatConPopups.none(DatCon.frame);
+                        DatConPopups.none(datCon.getFrame());
                         return null;
                     }
                     DatConLog.Log("DJIAssistantFile.extractFirst:one");
-                    return new DatFileV3(result.getFile());
+                    return new DatFileV3(datCon, result.getFile());
                 } finally {
                     datCon.goButton.setBackground(bgColor);
                     datCon.goButton.setForeground(fgColor);
@@ -218,31 +200,27 @@ public class DatFile {
                 }
             }
         }
-        return createDatFile(datFileName);
+        return createDatFile(datCon, datFileName);
     }
 
-    public DatFile(File _file) throws NotDatFile, FileNotFoundException {
-        datHeader = new DatHeader(this);
-        file = _file;
-        results = new AnalyzeDatResults();
-        fileLength = file.length();
-        inputStream = new FileInputStream(file);
-        _channel = inputStream.getChannel();
+    public static boolean isDatFile(String datFilePath) {
+        byte arra[] = new byte[256];
         try {
-            memory = _channel.map(FileChannel.MapMode.READ_ONLY, 0, fileLength);
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileInputStream bfr = new FileInputStream(new File(datFilePath));
+            bfr.read(arra, 0, 256);
+            bfr.close();
+            String s = new String(arra, 16, 26); // Build w/date-time string
+            if (s.startsWith("BUILD ")) {
+            	// Let's assume a valid .dat file
+                return true;
+            }
+        } catch (Exception e) {
         }
-        memory.order(ByteOrder.LITTLE_ENDIAN);
-        acType = datHeader.getAcType();
-        //acTypeName = DatHeader.toString(acType);
+        return false;
     }
 
-    public DatFile() {
-    }
-
-    public ConvertDat createConVertDat() {
-        return (new ConvertDat(this));
+    public ConvertDat createConvertDat(DatConPanel datCon) {
+        return new ConvertDat(datCon, this);
     }
 
     public void close() {

@@ -1,4 +1,4 @@
-package src.Files;
+package Files;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

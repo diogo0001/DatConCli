@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.GUI;
+package GUI;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,10 +30,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import src.Files.ConvertDat;
-import src.Files.FileBeingUsed;
-import src.Files.Persist;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.FileBeingUsed;
+import Files.Persist;
 
 public class SampRatePanel extends JPanel implements IDatConPanel {
 
@@ -50,7 +50,7 @@ public class SampRatePanel extends JPanel implements IDatConPanel {
     public SampRatePanel() {
     }
 
-    public SampRatePanel(DatCon datCon) {
+    public SampRatePanel(DatConPanel datCon) {
         super();
         //this.datCon = datCon;
         for (int i = 0; i < sampRates.length; i++) {

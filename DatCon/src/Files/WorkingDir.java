@@ -1,7 +1,8 @@
-package src.Files;
+package Files;
 
 import java.io.File;
-import src.apps.DatCon;
+
+import App.DatConPanel;
 
 public class WorkingDir {
 	private File workingDir = null;
@@ -16,7 +17,7 @@ public class WorkingDir {
 
 	public static WorkingDir instance;
 
-	public WorkingDir(DatCon datCon) {
+	public WorkingDir(DatConPanel datCon) {
 		instance = this;
 		//this.datCon = datCon;
 		// this.log = datCon.log;

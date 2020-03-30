@@ -17,12 +17,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.GUI;
+package GUI;
 
 import java.io.FileNotFoundException;
 
-import src.Files.ConvertDat;
-import src.Files.FileBeingUsed;
+import Files.ConvertDat;
+import Files.FileBeingUsed;
 
 public interface IDatConPanel {
 

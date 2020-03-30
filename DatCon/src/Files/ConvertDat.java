@@ -17,78 +17,61 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.Files;
+package Files;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-//import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import src.DatConRecs.*;
-import src.Files.DatHeader.AcType;
-import src.apps.DatCon;
-import src.DatConRecs.RecDef.RecordDef;
+import App.DatCon;
+import App.DatConPanel;
+import DatConRecs.Dictionary;
+import DatConRecs.GoTxt50_12;
+import DatConRecs.Record;
+import DatConRecs.RecDef.RecordDef;
+import Files.DatHeader.AcType;
 
 public class ConvertDat {
 
-    public DatFile _datFile = null;
-
-    public long tickNo = 0;
-
-    public long tickRangeLower = 0;
-
-    public long tickRangeUpper = Long.MAX_VALUE;
-
-    public float sampleRate = (float) 600.0;
-
-    public long timeOffset = 0;
-
-    public Vector<Record> records = new Vector<Record>();
-
     public enum KmlType {
-        NONE, GROUNDTRACK, PROFILE
+        NONE,
+        GROUNDTRACK,
+        PROFILE,
     };
 
+	public DatConPanel _datCon = null;
+    public DatFile _datFile = null;
+    public long tickNo = 0;
+    public long tickRangeLower = 0;
+    public long tickRangeUpper = Long.MAX_VALUE;
+    public float sampleRate = (float) 600.0;
+    public long timeOffset = 0;
+    public Vector<Record> records = new Vector<Record>();
     public KmlType kmlType = KmlType.NONE;
-
     public File kmlFile;
-
     public String kmlFileName;
-
     public double homePointElevation = Double.NaN;
-
     public boolean csvEventLogOutput = false;
-
     public PrintStream eloPS = null;
-
     public PrintStream cloPS = null;
-
     public PrintStream recDefsPS = null;
-
     public PrintStream kmlPS = null;
-
     public CsvWriter csvWriter = null;
-
     public PrintStream tloPS = null;
-
     protected boolean printVersion;
-
     public float absoluteHeight = 0.0f;
-
     public boolean absoluteHeightValid = false;
-
     private double takeOffAlt = Double.NaN;
-
     private double relativeHeight = 0.0;
-
     private boolean relativeHeightOK = false;
 
-    public ConvertDat(DatFile datFile) {
+    public ConvertDat(DatConPanel datCon, DatFile datFile) {
+    	_datCon = datCon;
         _datFile = datFile;
     }
 
@@ -96,7 +79,7 @@ public class ConvertDat {
     }
 
     public AnalyzeDatResults analyze(boolean printVersion) throws IOException {
-        throw new RuntimeException("ConvertDat analyze called");
+        throw new RuntimeException("ConvertDat.analyze() called");
     }
 
     public enum lineType {
@@ -246,9 +229,19 @@ public class ConvertDat {
                             + recInDat + "/" + recInDat.getLength());
                 }
             }
-            DatConLog.Log("Num of created parsers " + numCreatedParsers
-                    + " Num of NoRecParsers " + numNoRecParsers);
-            //now sort the records
+            DatConLog.Log(" "); // Separator
+            String
+            msg = "# created parsers:  " + numCreatedParsers;
+            _datCon.showInfo(msg);
+            msg = "# NoRec   parsers:  " + numNoRecParsers;
+            _datCon.showInfo(msg);
+            // Sort the records by ID
+//            records.sort(new Comparator<Record>() {
+//            	@Override
+//            	public int compare(Record a, Record b) {
+//            		return a.getId().compareTo(b.getId());
+//            	}
+//            });
             Iterator<Integer> iter = Dictionary.defaultOrder.iterator();
             while (iter.hasNext()) {
                 int recId = iter.next().intValue();
@@ -270,7 +263,6 @@ public class ConvertDat {
                 Record rcrd = recordIter.next();
                 records.add(rcrd);
             }
-
         } catch (Exception e) {
             DatConLog.Exception(e);
         }

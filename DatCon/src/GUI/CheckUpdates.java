@@ -17,45 +17,41 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 
-import src.Files.DatConLog;
-import src.Files.Persist;
-import src.apps.DatCon;
+import App.DatCon;
+import App.DatConPanel;
+import Files.DatConLog;
+import Files.Persist;
 
 public class CheckUpdates implements ActionListener {
 
-    DatCon datCon = null;
+	private DatConPanel _datCon = null;
+    private JDialog dialog = null;
+    private JButton okButton = new JButton("OK");
+    private JButton gotoButton = new JButton("Goto datfile.net/downloads");
+    private JButton dontShowAgain = new JButton("Don't show this again");
 
-    public CheckUpdates(DatCon datCon) {
-        this.datCon = datCon;
+    public CheckUpdates(DatConPanel datCon) {
+        _datCon = datCon;
     }
 
-    JDialog dialog = null;
-
-    JButton okButton = new JButton("OK");
-
-    JButton gotoButton = new JButton("Goto datfile.net/downloads");
-
-    JButton dontShowAgain = new JButton("Don't show this again");
-
     private void createUpdateDialog() {
-        dialog = new JDialog(DatCon.frame, "Newer Version Available", true);
+        dialog = new JDialog(_datCon.getFrame(), "Newer Version Available", true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setLocation(100, 100);
         // Set size
@@ -86,10 +82,12 @@ public class CheckUpdates implements ActionListener {
 
         dialog.setVisible(true);
     }
-
+   
     private boolean newVersionAvailable() {
-        
-        return false;
+        String newestVersion = "";
+        //int comp = newestVersion.compareTo(DatCon.version);
+        int comp = compareVersions(newestVersion, DatCon.version);
+        return (comp > 0);
     }
 
     private int compareVersions(String v1, String v2) {
@@ -108,13 +106,11 @@ public class CheckUpdates implements ActionListener {
     }
 
     public void checkForUpdates() {
-        newerVersionOnServer = false;
-        QueryServer fmTask = new QueryServer();
-        fmTask.execute();
-    }
+           }
 
     private boolean newerVersionOnServer = false;
 
+    @SuppressWarnings("unused")
     private class QueryServer extends SwingWorker<Object, Object> {
         QueryServer() {
         }
@@ -146,13 +142,9 @@ public class CheckUpdates implements ActionListener {
             JComponent source = (JComponent) (e.getSource());
             if (source == okButton) {
                 dialog.dispose();
-            } else if (source == gotoButton) {
-                dialog.dispose();
-                Desktop.getDesktop()
-                        .browse(new URI("https://datfile.net/downloads.html"));
             } else if (source == dontShowAgain) {
                 Persist.showNewVerAvail = false;
-                datCon.menuBar.showWhenNewVerAvail.setSelected(false);
+                _datCon.menuBar.showWhenNewVerAvail.setSelected(false);
                 dialog.dispose();
                 Persist.save();
             }

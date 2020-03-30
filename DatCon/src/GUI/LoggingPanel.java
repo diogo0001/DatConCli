@@ -1,4 +1,4 @@
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +11,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import src.Files.DatConLog;
+import Files.DatConLog;
 
 @SuppressWarnings("serial")
 public class LoggingPanel extends JScrollPane {
@@ -34,7 +34,7 @@ public class LoggingPanel extends JScrollPane {
         if (SwingUtilities.isEventDispatchThread()) {
             appendInEDT(msg, c);
         } else {
-            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     appendInEDT(msg, c);
                 }
@@ -57,19 +57,24 @@ public class LoggingPanel extends JScrollPane {
         logArea.replaceSelection(msg);
     }
 
-    public void Info(String msg) {
-        if (msg.length() > 0) {
-            appendTo(msg + "\n", Color.BLACK);
-            src.Files.DatConLog.Log("MSG: " + msg);
-        }
-    }
-
     public void clear() {
         logArea.setText("");
     }
 
+    public void Info(String msg) {
+        if (msg.length() > 0) {
+            appendTo(msg + System.lineSeparator(), Color.BLACK);
+            DatConLog.Log(msg);
+        }
+    }
+
     public void Error(String error) {
-        appendTo(error + "\n", Color.RED);
-        DatConLog.Log("ERROR: " + error);
+        appendTo(error + System.lineSeparator(), Color.RED);
+        DatConLog.Error(error);
+    }
+
+    public void Exception(Exception e, String msg) {
+    	appendTo((msg != null ? msg : e.getMessage()) + System.lineSeparator(), Color.RED);
+        DatConLog.Exception(e, msg);
     }
 }

@@ -17,29 +17,32 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.Files;
+package Files;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import src.apps.DatCon;
+import App.DatCon;
 
 public class DatConLog {
     private static PrintWriter dotdatPW = null;
 
-    public DatConLog() {
-        String userHome = System.getProperty("user.home");
-        if (userHome != null && userHome.length() > 0) {
+    public DatConLog(File inFile, File outFile) {
+    	// No longer using the user's home, but the file dir where we're looking anyway!
+        //String userHome = System.getProperty("user.home");
+        //if (userHome != null && userHome.length() > 0) {
+        	String logPath = inFile.getAbsolutePath() + ".LOG";
             try {
                 dotdatPW = new PrintWriter(new BufferedWriter(
-                        new FileWriter(userHome + "/.dotdat", false)));
+                        new FileWriter(logPath, false)));
             } catch (FileNotFoundException e) {
             } catch (IOException e) {
             }
-        }
+        //}
         dotdatPW.println("Version " + DatCon.version);
         dotdatPW.flush();
     }
@@ -62,15 +65,19 @@ public class DatConLog {
 
     public static void Exception(Exception e) {
         if (dotdatPW != null) {
+        	dotdatPW.println(e.getMessage());
             e.printStackTrace(dotdatPW);
             dotdatPW.flush();
         }
     }
 
     public static void Exception(Exception e, String msg) {
-        Error(msg);
         if (dotdatPW != null) {
-            e.printStackTrace(dotdatPW);
+        	if (msg != null) {
+        		//DatCon.getInstance().showException(e, msg);
+        		dotdatPW.println(msg);
+        	}
+        	e.printStackTrace(dotdatPW);
             dotdatPW.flush();
         }
     }

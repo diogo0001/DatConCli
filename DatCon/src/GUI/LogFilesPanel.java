@@ -1,4 +1,4 @@
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -21,18 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.DatFile;
-import src.Files.FileBeingUsed;
-import src.Files.Persist;
-import src.V3.Files.DatFileV3;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.DatFile;
+import Files.FileBeingUsed;
+import Files.Persist;
+import Files.V3.DatFileV3;
 
 @SuppressWarnings("serial")
 public class LogFilesPanel extends JPanel
         implements ActionListener, PropertyChangeListener, IDatConPanel {
-    DatCon datCon = null;
+    DatConPanel datCon = null;
 
     public static LogFilesPanel instance = null;
 
@@ -66,7 +66,7 @@ public class LogFilesPanel extends JPanel
 
     public PrintStream eloPS = null;
 
-    public LogFilesPanel(DatCon datCon) {
+    public LogFilesPanel(DatConPanel datCon) {
         this.datCon = datCon;
         instance = this;
 
@@ -179,15 +179,15 @@ public class LogFilesPanel extends JPanel
             JComponent source = (JComponent) (evt.getSource());
             if (source == eventViewIt) {
                 Desktop.getDesktop().open(
-                        new File(datCon.outputDirName + "/" + eloFileName));
+                        new File(datCon.outputDirPath + "/" + eloFileName));
             }
             if (source == configViewIt) {
                 Desktop.getDesktop().open(
-                        new File(datCon.outputDirName + "/" + cloFileName));
+                        new File(datCon.outputDirPath + "/" + cloFileName));
             }
             if (source == recDefsViewIt) {
                 Desktop.getDesktop().open(
-                        new File(datCon.outputDirName + "/" + recDefsFileName));
+                        new File(datCon.outputDirPath + "/" + recDefsFileName));
             }
             if (source == eventFileButton) {
                 Persist.logPanelEFB = eventFileButton.isSelected();
@@ -232,19 +232,19 @@ public class LogFilesPanel extends JPanel
     public void createPrintStreams(String outDirName)
             throws FileBeingUsed, FileNotFoundException {
         if (eventFileButton.isSelected()) {
-            datCon.log.Info("eventLog : " + outDirName + "\\" + eloFileName);
+            datCon.logPanel.Info("eventLog : " + outDirName + "\\" + eloFileName);
             if (eloFileName.length() > 0) {
                 eloPS = new PrintStream(outDirName + "/" + eloFileName);
             }
         }
         if (configFileButton.isSelected()) {
-            datCon.log.Info("configLog : " + outDirName + "\\" + cloFileName);
+            datCon.logPanel.Info("configLog : " + outDirName + "\\" + cloFileName);
             if (cloFileName.length() > 0) {
                 cloPS = new PrintStream(outDirName + "/" + cloFileName);
             }
         }
         if (recDefsFileButton.isSelected()) {
-            datCon.log.Info("recDefs : " + outDirName + "\\" + recDefsFileName);
+            datCon.logPanel.Info("recDefs : " + outDirName + "\\" + recDefsFileName);
             if (recDefsFileName.length() > 0) {
                 recDefsPS = new PrintStream(outDirName + "/" + recDefsFileName);
             }

@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.Files;
+package Files;
 
 public class FileBeingUsed extends Exception {
     private static final long serialVersionUID = 1L;

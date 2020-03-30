@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -40,18 +40,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-import src.Files.ConvertDat;
-import src.Files.CsvWriter;
-import src.Files.DatConLog;
-import src.Files.FileBeingUsed;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.CsvWriter;
+import Files.DatConLog;
+import Files.FileBeingUsed;
 
 public class CsvPanel extends JPanel
         implements ActionListener, PropertyChangeListener, IDatConPanel {
 
     private static final long serialVersionUID = 1L;
 
-    DatCon datCon = null;
+    DatConPanel datCon = null;
 
     public JRadioButton csvButton = null;
 
@@ -69,7 +69,7 @@ public class CsvPanel extends JPanel
 
     public boolean csvEventLogOutput = false;
 
-    public CsvPanel(DatCon datCon) {
+    public CsvPanel(DatConPanel datCon) {
         this.datCon = datCon;
 
         setLayout(new GridBagLayout());
@@ -159,7 +159,7 @@ public class CsvPanel extends JPanel
             JComponent source = (JComponent) (e.getSource());
             if (source == viewIt) {
                 Desktop.getDesktop().open(
-                        new File(datCon.outputDirName + "/" + csvFileName));
+                        new File(datCon.outputDirPath + "/" + csvFileName));
             }
             if (source == eventCsvButton) {
                 if (eventCsvButton.isSelected())
@@ -188,7 +188,7 @@ public class CsvPanel extends JPanel
             csvWriter = null;
         }
         if (csvButton.isSelected()) {
-            datCon.log.Info("Csv file : " + outDirName + "\\" + csvFileName);
+            datCon.logPanel.Info("Csv file : " + outDirName + "\\" + csvFileName);
             if (csvFileName.length() > 0) {
                 try {
                     csvWriter = new CsvWriter(outDirName + "/" + csvFileName);

@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -32,9 +32,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-import src.Files.DatFile;
-import src.Files.Persist;
-import src.Files.DatConLog;
+import Files.DatFile;
+import Files.Persist;
+import Files.DatConLog;
 
 public class OffsetPanel extends JPanel implements ActionListener {
 

@@ -1,4 +1,4 @@
-package src.Files;
+package Files;
 
 /*                PUBLIC DOMAIN NOTICE
 This program was prepared by Los Alamos National Security, LLC 

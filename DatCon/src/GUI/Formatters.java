@@ -1,4 +1,4 @@
-package src.GUI;
+package GUI;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -36,9 +36,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 
-import src.Files.DatConLog;
-import src.Files.Persist;
-import src.apps.DatCon;
+import App.DatCon;
+import App.DatConPanel;
+import Files.DatConLog;
+import Files.Persist;
 
 @SuppressWarnings("serial")
 public class DatConMenuBar extends JMenuBar implements ActionListener {
@@ -75,9 +76,9 @@ public class DatConMenuBar extends JMenuBar implements ActionListener {
     JRadioButtonMenuItem smartTimeAxis = new JRadioButtonMenuItem(
             "Smart Time Axis processing");
 
-    private DatCon datCon = null;
+    private DatConPanel datCon = null;
 
-    public DatConMenuBar(DatCon datCon) {
+    public DatConMenuBar(DatConPanel datCon) {
         this.datCon = datCon;
         this.datCon.menuBar = this;
         JMenu fileMenu = new JMenu("File");

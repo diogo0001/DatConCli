@@ -1,4 +1,4 @@
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,21 +14,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.FileBeingUsed;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.FileBeingUsed;
 
 @SuppressWarnings("serial")
 public class HPElevation extends JPanel
         implements PropertyChangeListener, IDatConPanel {
-    DatCon datCon = null;
+    DatConPanel datCon = null;
 
     private JFormattedTextField homePointElevationField = null;
 
     private double homePointElevation = 0.0;
 
-    public HPElevation(DatCon datCon) {
+    public HPElevation(DatConPanel datCon) {
         this.datCon = datCon;
         Font font = new Font("Verdana", Font.BOLD, 14);
         setLayout(new GridBagLayout());

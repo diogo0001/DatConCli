@@ -1,5 +1,5 @@
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -24,18 +24,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.KmlType;
-import src.Files.FileBeingUsed;
-import src.Files.GoogleElevation;
-import src.Files.DatConLog;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.ConvertDat.KmlType;
+import Files.DatConLog;
+import Files.FileBeingUsed;
+import Files.GoogleElevation;
 
 @SuppressWarnings("serial")
 public class KMLPanel extends JPanel
         implements ActionListener, PropertyChangeListener, IDatConPanel {
 
-    DatCon datCon = null;
+    DatConPanel datCon = null;
 
     JRadioButton groundTrack = new JRadioButton("Ground Track");
 
@@ -65,9 +65,9 @@ public class KMLPanel extends JPanel
 
     public String kmlFileName;
 
-    public KMLPanel(DatCon datCon) {
+    public KMLPanel(DatConPanel datCon) {
         this.datCon = datCon;
-        log = datCon.log;
+        log = datCon.logPanel;
 
         setLayout(new GridBagLayout());
         setBorder(new LineBorder(Color.BLACK, 1, true));

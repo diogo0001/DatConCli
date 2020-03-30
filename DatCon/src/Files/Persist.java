@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.Files;
+package Files;
 
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -30,58 +30,49 @@ import java.io.PrintStream;
 public class Persist {
 
     static File persistenceFile = null;
-
     public static boolean showUnits = false;
-
     public static boolean EXPERIMENTAL_FIELDS = false;
-
     public static boolean autoTransDJIAFiles = true;
-
     public static boolean loadLastOnStartup = false;
-
     public static boolean showNewVerAvail = true;
-
     public static boolean checkUpdts = true;
-
     public static String inputFileName = "";
-
     public static String outputDirName = "";
-
     public static boolean EXPERIMENTAL_DEV = false;
-
     public static boolean motorPowerCalcs = false;
-
     public static boolean inertialOnlyCalcs = false;
-
     public static boolean magCalcs = false;
-
     public static boolean airComp = false;
-
     public static boolean invalidStructOK = false;
-
     static public ParsingMode parsingMode = ParsingMode.JUST_ENGINEERED;
-
     public static Dimension datConSize = new Dimension(900, 950);
-
     public static int csvSampleRate = 30;
-
     public static boolean logPanelEFB = false;
-
     public static boolean logPanelCFB = false;
-
     public static boolean logPanelRDFB = false;
-
     public static boolean smartTimeAxis = true;
 
     static public enum ParsingMode {
-        JUST_DAT, JUST_ENGINEERED, DAT_THEN_ENGINEERED, ENGINEERED_THEN_DAT, ENGINEERED_AND_DAT
+        JUST_DAT,
+        JUST_ENGINEERED,
+        DAT_THEN_ENGINEERED,
+        ENGINEERED_THEN_DAT,
+        ENGINEERED_AND_DAT,
     };
 
-    public Persist() {
-        String userHome = System.getProperty("user.home");
-        if (userHome != null && userHome.length() > 0) {
-            persistenceFile = new File(userHome + "/.datCon");
+    public Persist(File inFile, File outFile) {
+    	String fileName = "";
+    	if (inFile == null || outFile == null) { // Normal GUI way
+    		String userHome = System.getProperty("user.home");
+    		if (userHome != null && userHome.length() > 0) {
+    			fileName = userHome + "/.datcon";
+    		} else {
+    			throw new RuntimeException("No \"user home\" directory property.");
+    		}
+        } else { // Command line
+        	fileName = outFile.getAbsolutePath() + "/.datcon-" + inFile.getName() + ".log";
         }
+    	persistenceFile = new File(fileName);
         load();
     }
 

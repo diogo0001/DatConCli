@@ -1,12 +1,12 @@
-package src.Files;
+package Files;
 
 import java.io.IOException;
 
-import src.DatConRecs.RecIMU;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.RecIMU;
+import Files.ConvertDat.lineType;
 
 public class IMUCalcs {
-    private static boolean debug = true;
+    //private static boolean debug = true;
 
     private double accelYawDegrees = 0.0;
 
@@ -36,7 +36,7 @@ public class IMUCalcs {
         return velNorth;
     }
 
-    private double accelNorthLast = 0.0;
+    //private double accelNorthLast = 0.0;
 
     public double getAccelMod() {
         return accelMod;
@@ -143,7 +143,7 @@ public class IMUCalcs {
         agELast = agE;
         agDLast = agD;
     }
-
+/*
     private double[] rotate(double[] quat, double[] accelBVec) {
         double[] retv = new double[3];
         retv[0] = accelBVec[0]
@@ -171,7 +171,7 @@ public class IMUCalcs {
 
         return retv;
     }
-
+*/
     public void computeAccel(float ag_X, float ag_Y, float ag_Z, double dt) {
         agN = ag_X;
         agE = ag_Y;

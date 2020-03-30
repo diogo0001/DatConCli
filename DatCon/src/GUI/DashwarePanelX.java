@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,17 +33,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import src.Files.DatConLog;
-import src.apps.DatCon;
+import App.DatConPanel;
+import Files.DatConLog;
 
 public class DashwarePanelX extends JPanel implements ActionListener {
-    DatCon datCon = null;
+
+	static final long serialVersionUID = 1;
+
+	DatConPanel datCon = null;
 
     JTextField status = new JTextField(15);
 
     JButton makeItDashware;
 
-    public DashwarePanelX(DatCon datCon) {
+    public DashwarePanelX(DatConPanel datCon) {
         this.datCon = datCon;
         Font font = new Font("Verdana", Font.BOLD, 14);
         setLayout(new GridBagLayout());
@@ -90,7 +93,7 @@ public class DashwarePanelX extends JPanel implements ActionListener {
             if (source == makeItDashware) {
                 datCon.timeAxisPanel.makeitDashware();
             }
-            datCon.checkState();
+            datCon.checkIOState();
         } catch (Exception exception) {
             DatConLog.Exception(exception);
         }

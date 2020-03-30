@@ -1,4 +1,4 @@
-package src.Files;
+package Files;
 
 public class RecSpec {
 

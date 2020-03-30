@@ -17,7 +17,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.GUI;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,20 +28,21 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
-import src.Files.ConvertDat;
-import src.Files.DatFile;
-import src.Files.FileBeingUsed;
-import src.Files.Persist;
-import src.Files.DatConLog;
-import src.apps.DatCon;
+
+import App.DatConPanel;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.DatFile;
+import Files.FileBeingUsed;
+import Files.Persist;
 
 public class TimeAxisPanel extends JPanel
         implements ActionListener, PropertyChangeListener, IDatConPanel {
@@ -90,11 +91,11 @@ public class TimeAxisPanel extends JPanel
 
     private JFormattedTextField upperTickField = null;
 
-    DatCon datCon = null;
+    DatConPanel datCon = null;
 
     DatFile datFile = null;
 
-    public TimeAxisPanel(DatCon datCon) {
+    public TimeAxisPanel(DatConPanel datCon) {
         this.datCon = datCon;
         lowerGroup.add(startRecording);
         lowerGroup.add(motorStart);
@@ -264,7 +265,7 @@ public class TimeAxisPanel extends JPanel
                 setUpper(motorStopTick);
             }
         }
-        datCon.checkState();
+        datCon.checkIOState();
     }
 
     public void setLower(long lower) {
@@ -351,7 +352,7 @@ public class TimeAxisPanel extends JPanel
                 offset = flightStartTick;
             }
             setUpperLower();
-            datCon.checkState();
+            datCon.checkIOState();
         } catch (Exception exception) {
             DatConLog.Exception(exception);
         }
@@ -379,7 +380,7 @@ public class TimeAxisPanel extends JPanel
                     long upperTick = (Long) value;
                     setUpper(upperTick);
                 }
-                datCon.checkState();
+                datCon.checkIOState();
             }
         } catch (Exception exception) {
             DatConLog.Exception(exception);

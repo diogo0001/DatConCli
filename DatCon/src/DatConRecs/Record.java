@@ -1,4 +1,4 @@
-package src.DatConRecs;
+package DatConRecs;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -6,16 +6,15 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import src.Files.Axis;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.CsvWriter;
-import src.Files.DatConLog;
-import src.Files.DatFile;
-import src.Files.Persist;
-import src.Files.RecSpec;
-import src.Files.Signal;
-import src.V3.Files.DatFileV3;
+import Files.Axis;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.CsvWriter;
+import Files.DatFile;
+import Files.Persist;
+import Files.RecSpec;
+import Files.Signal;
+import Files.V3.DatFileV3;
 
 public abstract class Record extends RecSpec {
 
@@ -43,7 +42,7 @@ public abstract class Record extends RecSpec {
     }
 
     public String getDescription() {
-        return this.getClass().toString();
+        return getClass().toString();
     }
 
     public Record(ConvertDat convertDat, int id, int length) {
@@ -124,7 +123,7 @@ public abstract class Record extends RecSpec {
                 System.out.println(errMsg);
                 e.printStackTrace();
             } else {
-                DatConLog.Exception(e, errMsg);
+                convertDat._datCon.showException(e, errMsg);
             }
         }
         numRecExceptions++;

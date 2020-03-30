@@ -1,15 +1,15 @@
 
-package src.DatConRecs.String;
+package DatConRecs.String;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.TSAGeoMag;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.TSAGeoMag;
 
 public class RecFlyLog_32768 extends Record {
 

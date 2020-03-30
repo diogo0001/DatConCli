@@ -1,10 +1,10 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.AirCraftCondition;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.AirCraftCondition;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class AirCraftCondition39_70 extends AirCraftCondition {
     //    protected boolean valid = false;

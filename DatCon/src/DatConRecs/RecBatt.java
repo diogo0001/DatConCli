@@ -1,11 +1,11 @@
-package src.DatConRecs;
+package DatConRecs;
 
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import Files.AxesAndSigs;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
+import Files.ConvertDat.lineType;
 
 public class RecBatt extends Record {
 

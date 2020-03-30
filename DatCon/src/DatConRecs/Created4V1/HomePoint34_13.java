@@ -1,11 +1,11 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.AxesAndSigs;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class HomePoint34_13 extends Record {
 

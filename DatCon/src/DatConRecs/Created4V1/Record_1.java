@@ -1,14 +1,14 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.GoTxt50_12;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
+import DatConRecs.GoTxt50_12;
+import DatConRecs.Payload;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
 
-public class Record_1 extends src.DatConRecs.RecIMU {
+public class Record_1 extends DatConRecs.RecIMU {
     public Record_1(ConvertDat convertDat) {
         super(convertDat, 1, 120, 0);
         current = this;

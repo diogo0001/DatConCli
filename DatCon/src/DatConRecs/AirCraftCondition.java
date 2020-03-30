@@ -1,10 +1,10 @@
-package src.DatConRecs;
+package DatConRecs;
 
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
 
 public class AirCraftCondition extends Record {
     protected boolean valid = false;
@@ -20,7 +20,7 @@ public class AirCraftCondition extends Record {
     protected short UP_state = (short) 0;
 
     protected short landState = (short) 0;
-
+    
     protected short safe_fltr = (short) 0;
 
     protected String nearGrnd = "False";

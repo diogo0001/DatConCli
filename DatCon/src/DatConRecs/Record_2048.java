@@ -1,3 +1,21 @@
+/* Record207 class
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that redistribution of source code include
+the following disclaimer in the documentation and/or other materials provided
+with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY ITS CREATOR "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE CREATOR OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package DatConRecs;
 
 import Files.AxesAndSigs;
@@ -5,16 +23,18 @@ import Files.ConvertDat;
 import Files.ConvertDat.lineType;
 import Files.DatConLog;
 import Files.MagYaw;
-import Files.IMUCalcs;
 import Files.Persist;
 import Files.Quaternion;
 import Files.Signal;
 import Files.Units;
 import Files.Util;
 
-public class RecIMU extends Record {
+public class Record_2048 extends Record {
 
-    public static RecIMU current = null;
+    // 200 hZ
+    // length 122
+
+    public static Record_2048 current = null;
 
     protected double longRad = 0.0;
 
@@ -49,10 +69,6 @@ public class RecIMU extends Record {
     protected float gyroYLast = (float) 0.0;
 
     protected float gyroZLast = (float) 0.0;
-
-    protected float accelXLast = (float) 0.0;
-
-    protected float accelYLast = (float) 0.0;
 
     protected float baroSmooth = (float) 0.0;
 
@@ -126,53 +142,14 @@ public class RecIMU extends Record {
 
     protected MagYaw magYaw = new MagYaw();
 
-    protected IMUCalcs imuCalcs = null;
-
-    public RecIMU(ConvertDat convertDat, int id, int length, int index) {
-        super(convertDat, id, length);
-
+    public Record_2048(ConvertDat convertDat) {
+        super(convertDat, 2048, 120);
         current = this;
-        imuCalcs = new IMUCalcs(this, index);
-        coordSig = Signal.SeriesDouble(recName, index, "GPS coord", null,
-                Units.degrees180);
+    }
 
-        numSatsSig = Signal.SeriesFloat(recName, index, "Number of Satellites",
-                null, Units.noUnits);
-
-        barometerSig = Signal.SeriesFloat(recName, index, "Barometer", null,
-                Units.meters);
-
-        accelSig = Signal.SeriesFloat(recName, index, "Accelerometer",
-                AxesAndSigs.accelAxis, Units.G);
-
-        gyroSig = Signal.SeriesFloat(recName, index, "Gyroscope",
-                AxesAndSigs.gyroAxis, Units.degreesPerSec);
-
-        magSig = Signal.SeriesFloat(recName, index, "Magnetometer", null,
-                Units.aTesla);
-
-        velocitySig = Signal.SeriesFloat(recName, index, "Velocity", null,
-                Units.metersPerSec);
-
-        attitudeSig = Signal.SeriesDouble(recName, index, "Attitude", null,
-                Units.degrees180);
-
-        totalGyroSig = Signal.SeriesDouble(recName, index,
-                "Integrate and sum gyro values", null, Units.degrees);
-
-        directionSig = Signal.SeriesDouble(recName, index, "Direction", null,
-                Units.degrees180);
-
-        distanceSig = Signal.SeriesDouble(recName, index, "Distance", null,
-                Units.meters);
-
-        imuTempSig = Signal.SeriesDouble(recName, index, "IMU Temp", null,
-                Units.degreesC);
-
-        quaternionSig = Signal.SeriesDoubleExperimental(recName, index,
-                "Quaternion", null, Units.noUnits);
-        experimentalSig = Signal.SeriesFloatExperimental(recName, index,
-                "IMU exp", null, Units.noUnits);
+    public Record_2048(ConvertDat convertDat, int id, int length) {
+        super(convertDat, id, length);
+        current = this;
     }
 
     @Override
@@ -219,7 +196,8 @@ public class RecIMU extends Record {
                 }
                 double dist = Util.distance(latRad, longRad, dtLastLat,
                         dtLastLong);
-
+                if (dist > 100.0) {
+                }
                 if (dist > 0.001) {
                     bearingValid = true;
                 } else {
@@ -227,7 +205,7 @@ public class RecIMU extends Record {
                 }
                 bearingTrue = Util.bearing(dtLastLat, dtLastLong, latRad,
                         longRad);
-                double x = bearingTrue - convertDat.getGeoDeclination();
+                double x = bearingTrue - convertDat./*declination*/getGeoDeclination();
                 if (x < -180.0)
                     bearingDeclined = 360.0 + x;
                 else if (x > 180.0)
@@ -249,18 +227,12 @@ public class RecIMU extends Record {
             gyroYLast = gyroY;
             gyroXLast = gyroX;
             gyroZLast = gyroZ;
-            if (Persist.inertialOnlyCalcs) {
-                //                imuCalcs.computeAccel(quatW, quatX, quatY, quatZ, accelX,
-                //                        accelY, accelZ, dt);
-                //imuCalcs.computeAccel(ag_X, ag_Y, ag_Z, dt);
-            }
         }
         integrationLastTickNo = _payload.tickNo;
     }
 
-    public float getAg_X() {
-        return ag_X;
-    }
+    public static Signal experimentalSig = Signal
+            .SeriesFloatExperimental("IMU:exp", "IMU exp", null, Units.noUnits);
 
     protected boolean notFirstLine = false;
 
@@ -271,44 +243,6 @@ public class RecIMU extends Record {
     protected double rollRadians = 0.0;
 
     protected double velH = 0.0;
-
-    protected Signal coordSig = null;
-
-    protected Signal numSatsSig = null;
-
-    protected Signal barometerSig = null;
-
-    protected Signal accelSig = null;
-
-    protected Signal gyroSig = null;
-
-    protected Signal magSig = null;
-
-    protected Signal velocitySig = null;
-
-    protected Signal heightSig = null;
-
-    protected Signal attitudeSig = null;
-
-    protected Signal totalGyroSig = null;
-
-    protected Signal directionSig = null;
-
-    protected Signal distanceSig = null;
-
-    protected Signal imuTempSig = null;
-
-    protected Signal quaternionSig = null;
-
-    protected Signal experimentalSig = null;
-
-    public static Signal flightTimeSig = Signal.SeriesInt("flightTime",
-            "Flight Time", null, Units.msec);
-
-    public static Signal gpsHealthSig = Signal.SeriesInt("gpsHealth",
-            "GPS Health", null, Units.gpsHealth);
-
-    public static String recName = "IMU_ATTI";
 
     @Override
     public void printCols(lineType lineT) {
@@ -336,38 +270,69 @@ public class RecIMU extends Record {
             double latitudeDegrees = Math.toDegrees(latRad);
             if (GoTxt50_12.current == null) {
                 convertDat.processCoordsNoGoTxt(longitudeDegrees,
-                        latitudeDegrees, baroRaw);
+                        latitudeDegrees, baroSmooth);
             }
-            printCsvValue(longitudeDegrees, coordSig, "Longitude", lineT,
-                    convertDat.gpsCoordsOK);
-            printCsvValue(latitudeDegrees, coordSig, "Latitude", lineT,
-                    convertDat.gpsCoordsOK);
-            printCsvValue(numSats, numSatsSig, "numSats", lineT, valid);
 
-            printCsvValue(baroRaw, barometerSig, "barometer:Raw", lineT, valid);
-            printCsvValue(baroSmooth, barometerSig, "barometer:Smooth", lineT,
+            if (GoTxt50_12.current != null) {
+                printCsvValue(GoTxt50_12.current.flightTime,
+                        GoTxt50_12.flightTimeSig, "", lineT,
+                        GoTxt50_12.current.valid);
+            }
+            printCsvValue(longitudeDegrees, AxesAndSigs.longitudeSig, "", lineT,
+                    convertDat.gpsCoordsOK);
+            printCsvValue(latitudeDegrees, AxesAndSigs.latitudeSig, "", lineT,
+                    convertDat.gpsCoordsOK);
+            printCsvValue(numSats, AxesAndSigs.numSatsSig, "", lineT, valid);
+            if (GoTxt50_12.current != null) {
+                printCsvValue(GoTxt50_12.current.gpsLevel,
+                        GoTxt50_12.gpsHealthSig, "", lineT,
+                        GoTxt50_12.current.valid);
+            }
+
+            printCsvValue(baroRaw, AxesAndSigs.barometerSig, "Raw", lineT,
+                    valid);
+            printCsvValue(baroSmooth, AxesAndSigs.barometerSig, "Smooth", lineT,
                     valid);
 
-            printCsvValue(accelX, accelSig, "accel:X", lineT, valid);
-            printCsvValue(accelY, accelSig, "accel:Y", lineT, valid);
-            printCsvValue(accelZ, accelSig, "accel:Z", lineT, valid);
-            printCsvValue(accel, accelSig, "accel:Composite", lineT, valid);
+            if (GoTxt50_12.current != null) {
+                printCsvValue(GoTxt50_12.current.vpsHeight,
+                        GoTxt50_12.vpsHeightSig, "", lineT,
+                        GoTxt50_12.current.valid & GoTxt50_12.current.waveWork);
+            }
+            printCsvValue(convertDat.getRelativeHeight(),
+                    GoTxt50_12.relativeHeightSig, "", lineT,
+                    convertDat.isRelativeHeightOK());
 
-            printCsvValue(gyroX, gyroSig, "gyro:X", lineT, valid);
-            printCsvValue(gyroY, gyroSig, "gyro:Y", lineT, valid);
-            printCsvValue(gyroZ, gyroSig, "gyro:Z", lineT, valid);
-            printCsvValue(gyro, gyroSig, "gyro:Composite", lineT, valid);
+            printCsvValue(convertDat.getAbsoluteHeight(), "absoluteHeight",
+                    lineT, convertDat.absoluteHeightValid);
 
-            printCsvValue(magX, magSig, "mag:X", lineT, valid);
-            printCsvValue(magY, magSig, "mag:Y", lineT, valid);
-            printCsvValue(magZ, magSig, "mag:Z", lineT, valid);
-            printCsvValue(magMod, magSig, "mag:Mod", lineT, valid);
+            printCsvValue(accelX, AxesAndSigs.accelSig, "X", lineT, valid);
+            printCsvValue(accelY, AxesAndSigs.accelSig, "Y", lineT, valid);
+            printCsvValue(accelZ, AxesAndSigs.accelSig, "Z", lineT, valid);
+            printCsvValue(accel, AxesAndSigs.accelSig, "Composite", lineT,
+                    valid);
 
-            printCsvValue(velN, velocitySig, "velN", lineT, valid);
-            printCsvValue(velE, velocitySig, "velE", lineT, valid);
-            printCsvValue(velD, velocitySig, "velD", lineT, valid);
-            printCsvValue(vel, velocitySig, "velComposite", lineT, valid);
-            printCsvValue(velH, velocitySig, "velH", lineT, valid);
+            printCsvValue(gyroX, AxesAndSigs.gyroSig, "X", lineT, valid);
+            printCsvValue(gyroY, AxesAndSigs.gyroSig, "Y", lineT, valid);
+            printCsvValue(gyroZ, AxesAndSigs.gyroSig, "Z", lineT, valid);
+            printCsvValue(gyro, AxesAndSigs.gyroSig, "Composite", lineT, valid);
+
+            //                      printCsvValue("errorX", diffX, lineT, valid);
+            //            printCsvValue("errorY", diffY, lineT, valid);
+            //            printCsvValue("errorZ", diffZ, lineT, valid);
+            //            printCsvValue("error", error, lineT, valid);
+
+            printCsvValue(magX, AxesAndSigs.magSig, "X", lineT, valid);
+            printCsvValue(magY, AxesAndSigs.magSig, "Y", lineT, valid);
+            printCsvValue(magZ, AxesAndSigs.magSig, "Z", lineT, valid);
+            printCsvValue(magMod, AxesAndSigs.magSig, "Mod", lineT, valid);
+
+            printCsvValue(velN, AxesAndSigs.velocitySig, "N", lineT, valid);
+            printCsvValue(velE, AxesAndSigs.velocitySig, "E", lineT, valid);
+            printCsvValue(velD, AxesAndSigs.velocitySig, "D", lineT, valid);
+            printCsvValue(vel, AxesAndSigs.velocitySig, "Composite", lineT,
+                    valid);
+            printCsvValue(velH, AxesAndSigs.velocitySig, "H", lineT, valid);
 
             double velGPS = 0.0;
             if (notFirstLine) {
@@ -381,34 +346,28 @@ public class RecIMU extends Record {
 
             lastLatRad = latRad;
             lastLongRad = longRad;
-            printCsvValue(velGPS - velH, velocitySig, "GPS-H", lineT, valid);
+            printCsvValue(velGPS - velH, AxesAndSigs.velocitySig, "GPS-H",
+                    lineT, valid);
 
-            printCsvValue(quatW, quaternionSig, "quatW", lineT, valid);
-            printCsvValue(quatX, quaternionSig, "quatX", lineT, valid);
-            printCsvValue(quatY, quaternionSig, "quatY", lineT, valid);
-            printCsvValue(quatZ, quaternionSig, "quatZ", lineT, valid);
+            printCsvValue(quatW, AxesAndSigs.quaternionSig, "W", lineT, valid);
+            printCsvValue(quatX, AxesAndSigs.quaternionSig, "X", lineT, valid);
+            printCsvValue(quatY, AxesAndSigs.quaternionSig, "Y", lineT, valid);
+            printCsvValue(quatZ, AxesAndSigs.quaternionSig, "Z", lineT, valid);
 
-            printCsvValue(roll, attitudeSig, "roll", lineT, valid);
-            printCsvValue(pitch, attitudeSig, "pitch", lineT, valid);
-            printCsvValue(yaw, attitudeSig, "yaw", lineT, valid);
-            printCsvValue(((yaw + 360.0) % 360.0), attitudeSig, "yaw360", lineT,
-                    valid);
+            printCsvValue(roll, AxesAndSigs.rollSig, "", lineT, valid);
+            printCsvValue(pitch, AxesAndSigs.pitchSig, "", lineT, valid);
+            printCsvValue(yaw, AxesAndSigs.yawSig, "", lineT, valid);
+            printCsvValue(((yaw + 360.0) % 360.0), AxesAndSigs.yaw360Sig, "",
+                    lineT, valid);
 
-            printCsvValue(totalZGyro, totalGyroSig, "totalGyro:Z", lineT,
+            printCsvValue(totalZGyro, AxesAndSigs.totalGyroSig, "Z", lineT,
                     valid);
-            printCsvValue(totalXGyro, totalGyroSig, "totalGyro:X", lineT,
+            printCsvValue(totalXGyro, AxesAndSigs.totalGyroSig, "X", lineT,
                     valid);
-            printCsvValue(totalYGyro, totalGyroSig, "totalGyro:Y", lineT,
+            printCsvValue(totalYGyro, AxesAndSigs.totalGyroSig, "Y", lineT,
                     valid);
             if (lineT == lineType.LINE) {
                 notFirstLine = true;
-                if (Persist.inertialOnlyCalcs) {
-                    double dt = (((double) (convertDat.tickNo - lastTickNo))
-                            / _datFile.getClockRate());
-                    imuCalcs.computeAccel(Math.toRadians(pitch),
-                            Math.toRadians(roll), Math.toRadians(yaw), accelX,
-                            accelY, accelZ, dt);
-                }
                 lastTickNo = convertDat.tickNo;
             }
 
@@ -417,9 +376,11 @@ public class RecIMU extends Record {
                 magYaw.compute(Math.toRadians(pitch), Math.toRadians(roll),
                         magX, magY, magZ, magMod);
                 distanceHP = Util.distance(latRad, longRad,
-                        convertDat.getHPLatRad(), convertDat.getHPLongRad());
+                        convertDat./*latitudeHP*/getHPLatRad(),
+                        convertDat./*longitudeHP*/getHPLongRad());
             }
-            printCsvValue(magYaw.getDegrees(), magSig, "magYaw", lineT, valid);
+            printCsvValue(magYaw.getDegrees(), AxesAndSigs.magSig, "magYaw",
+                    lineT, valid);
             if (Persist.magCalcs) {
                 double diff = 0.0;
                 if (yaw > magYaw.getDegrees() + 180) {
@@ -429,20 +390,18 @@ public class RecIMU extends Record {
                 } else {
                     diff = magYaw.getDegrees() - yaw;
                 }
-                printCsvValue(diff, magSig, "Yaw-magYaw", lineT, valid);
+                printCsvValue(diff, AxesAndSigs.magYawDiffSig, "", lineT,
+                        valid);
             }
-            if (Persist.inertialOnlyCalcs) {
-                imuCalcs.printCols(lineT, valid);
-            }
-            printCsvValue(distanceHP, distanceSig, "distanceHP", lineT,
-                    convertDat.isHpValid());
-            printCsvValue(distanceTravelled, distanceSig, "distanceTravelled",
-                    lineT, valid);
-            printCsvValue(bearingDeclined, directionSig,
-                    "directionOfTravel[mag]", lineT, bearingValid);
-            printCsvValue(bearingTrue, directionSig, "directionOfTravel[true]",
+            printCsvValue(distanceHP, AxesAndSigs.distanceHPSig, "", lineT,
+                    convertDat./*validHP*/isHpValid());
+            printCsvValue(distanceTravelled, AxesAndSigs.distanceTravelledSig,
+                    "", lineT, valid);
+            printCsvValue(bearingDeclined, AxesAndSigs.directionOfTravelSig,
+                    "mag", lineT, bearingValid);
+            printCsvValue(bearingTrue, AxesAndSigs.directionOfTravelSig, "true",
                     lineT, bearingValid);
-            printCsvValue(imuTemp, imuTempSig, "temperature", lineT, valid);
+            printCsvValue(imuTemp, AxesAndSigs.imuTempSig, "", lineT, valid);
             if (Persist.EXPERIMENTAL_FIELDS) {
                 printCsvValue(ag_X, experimentalSig, "ag_X", lineT, valid);
                 printCsvValue(ag_Y, experimentalSig, "ag_Y", lineT, valid);
@@ -468,7 +427,7 @@ public class RecIMU extends Record {
         return rollRadians;
     }
 
-    public double getVh() {
+    public double getVelH() {
         return velH;
     }
 
@@ -480,12 +439,11 @@ public class RecIMU extends Record {
         return velE;
     }
 
-    public double getVd() {
-        return velD;
-    }
-
     public double getDistanceTravelled() {
         return distanceTravelled;
     }
 
+    public double getVelD() {
+        return velD;
+    }
 }

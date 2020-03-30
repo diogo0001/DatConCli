@@ -1,12 +1,11 @@
-package src.DatConRecs;
+package DatConRecs;
 
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.RecSpec;
-import src.Files.RecSpec.RecType;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.RecSpec;
+import Files.Signal;
+import Files.Units;
 
 // Stuff that ends up in the .txt file produced by the Go App
 
@@ -305,7 +304,7 @@ public class GoTxt_12 extends Record {
         waveError = ((word32 & 0x20000) != 0);
         voltageWarning = (word32 & 0x600) >>> 9;
         rcModeChannel = (word32 & 0x6000) >>> 13;
-        boolean outOfLimit = ((word32 >>> 31 & 1) == 1);
+        //boolean outOfLimit = ((word32 >>> 31 & 1) == 1);
         failure = payloadBB.get(38); // possible linked to
         nonGPSError = (byte) (0x07 & (payloadBB.get(39)));
         vpsHeight = ((float) (0xff & payloadBB.get(41))) / 10.0f;

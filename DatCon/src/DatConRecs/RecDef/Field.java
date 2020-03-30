@@ -1,4 +1,4 @@
-package src.DatConRecs.RecDef;
+package DatConRecs.RecDef;
 
 public class Field {
     public enum FieldType {

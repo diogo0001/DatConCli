@@ -1,13 +1,13 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.AxesAndSigs;
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.AxesAndSigs;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
 
 public class RecSmartBatt77_18 extends Record {
 

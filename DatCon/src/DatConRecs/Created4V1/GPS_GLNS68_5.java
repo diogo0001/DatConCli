@@ -1,8 +1,8 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.GpsGroup;
-import src.DatConRecs.Payload;
-import src.Files.ConvertDat;
+import DatConRecs.GpsGroup;
+import DatConRecs.Payload;
+import Files.ConvertDat;
 
 public class GPS_GLNS68_5 extends GpsGroup {
 

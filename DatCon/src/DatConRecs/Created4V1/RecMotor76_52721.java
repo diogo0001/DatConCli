@@ -1,9 +1,8 @@
+package DatConRecs.Created4V1;
 
-package src.DatConRecs.Created4V1;
-
-import src.DatConRecs.Payload;
-import src.DatConRecs.Created4V3.Motor;
-import src.Files.ConvertDat;
+import DatConRecs.Payload;
+import DatConRecs.Created4V3.Motor;
+import Files.ConvertDat;
 
 public class RecMotor76_52721 extends Motor {
 

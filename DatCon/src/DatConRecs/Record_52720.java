@@ -1,10 +1,10 @@
-package src.DatConRecs;
+package DatConRecs;
 
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.Signal;
-import src.Files.Units;
-import src.Files.ConvertDat.lineType;
+import Files.ConvertDat;
+import Files.DatConLog;
+import Files.Signal;
+import Files.Units;
+import Files.ConvertDat.lineType;
 
 public class Record_52720 extends Record {
     protected boolean valid = false;

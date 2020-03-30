@@ -1,12 +1,12 @@
-package src.DatConRecs.String;
+package DatConRecs.String;
 
 import java.nio.ByteBuffer;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Record;
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
+import DatConRecs.Payload;
+import DatConRecs.Record;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class Sys_cfg_65535 extends Record {
 

@@ -1,8 +1,8 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Created4V3.IMUEX40;
-import src.Files.ConvertDat;
+import DatConRecs.Payload;
+import DatConRecs.Created4V3.IMUEX40;
+import Files.ConvertDat;
 
 public class IMUEX42_3 extends IMUEX40 {
 

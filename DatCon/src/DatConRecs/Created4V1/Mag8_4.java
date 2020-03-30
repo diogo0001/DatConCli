@@ -1,8 +1,8 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
-import src.DatConRecs.Payload;
-import src.DatConRecs.Created4V3.MagRawGroup;
-import src.Files.ConvertDat;
+import DatConRecs.Payload;
+import DatConRecs.Created4V3.MagRawGroup;
+import Files.ConvertDat;
 
 public class Mag8_4 extends MagRawGroup {
 

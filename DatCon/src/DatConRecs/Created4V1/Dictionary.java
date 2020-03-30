@@ -1,8 +1,8 @@
-package src.DatConRecs.Created4V1;
+package DatConRecs.Created4V1;
 
 import java.util.Vector;
 
-import src.Files.RecClassSpec;
+import Files.RecClassSpec;
 
 public class Dictionary {
     public static Vector<RecClassSpec> entries = new Vector<RecClassSpec>();

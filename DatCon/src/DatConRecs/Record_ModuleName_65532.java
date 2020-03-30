@@ -17,14 +17,11 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package src.DatConRecs;
+package DatConRecs;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import src.Files.ConvertDat;
-import src.Files.DatConLog;
-import src.Files.ConvertDat.lineType;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
 
 public class Record_ModuleName_65532 extends Record {
 

@@ -1,11 +1,11 @@
-package src.DatConRecs;
+package DatConRecs;
 
-import src.Files.ConvertDat;
-import src.Files.ConvertDat.lineType;
-import src.Files.DatConLog;
-import src.Files.RecSpec;
-import src.Files.Signal;
-import src.Files.Units;
+import Files.ConvertDat;
+import Files.ConvertDat.lineType;
+import Files.DatConLog;
+import Files.RecSpec;
+import Files.Signal;
+import Files.Units;
 
 // Stuff that ends up in the .txt file produced by the Go App
 
@@ -343,11 +343,11 @@ public class GoTxt50_12 extends Record {
         }
     }
 
-//    public static Signal flightTimeSig = Signal.SeriesInt("flightTime",
-//            "Flight Time", null, Units.msec);
-//
-//    public static Signal gpsHealthSig = Signal.SeriesInt("gpsHealth",
-//            "GPS Health", null, Units.gpsHealth);
+    public static Signal flightTimeSig = Signal.SeriesInt("flightTime",
+            "Flight Time", null, Units.msec);
+
+    public static Signal gpsHealthSig = Signal.SeriesInt("gpsHealth",
+            "GPS Health", null, Units.gpsHealth);
 
     public static Signal vpsHeightSig = Signal.SeriesDouble("vpsHeight",
             "vps Height", null, Units.meters);

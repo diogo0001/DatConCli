@@ -1,4 +1,4 @@
-/* Record255_2 class
+/* Record207 class
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that redistribution of source code include
@@ -16,37 +16,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package DatConRecs;
 
 import Files.ConvertDat;
-import Files.ConvertDat.lineType;
-import Files.DatConLog;
 
-public class Record_SDlogs_65280 extends Record {
+public class Record_1 extends DatConRecs.Record_2048 {
+    //private int _length;
 
-    public static Record_SDlogs_65280 current = null;
-
-    String payloadString = "";
-
-    public Record_SDlogs_65280(ConvertDat convertDat) {
-        super(convertDat, 0xFF00, -1);
+    public Record_1(ConvertDat convertDat) {
+        super(convertDat, 1, 120);
+        current = this;
     }
 
-    @Override
     public void process(Payload _payload) {
         super.process(_payload);
-        payloadString = _payload.getString();
-        System.out.println("Rec65280 " + payloadString);
     }
-
-    @Override
-    public void printCols(lineType lineT) {
-        try {
-
-        } catch (Exception e) {
-            DatConLog.Exception(e);
-        }
-    }
-
 }

@@ -5,6 +5,10 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 
 import Files.Persist;
+import Files.DatFile;
+import Files.CsvWriter;
+import Files.ConvertDat;
+import Files.AnalyzeDatResults;
 
 public class DatCon {
 
@@ -125,8 +129,24 @@ public class DatCon {
         	new Persist(datFile, outDir); // Sets up the log file for this .DAT file
     	}
 
-        // A separate thread to pre-analyze the current .DAT file
-        /*datConPanel =*/ new DatConPanel(datFile, outDir, isCommandLine, wantUI);
+		try {
+			DatFile datFileObj = DatFile.createDatFile(datFile.getAbsolutePath(), null);
+			// DatFile datFileObj = new DatFile(null, datFile);
+			System.out.println("running preanalyze...");
+			datFileObj.preAnalyze();
+			System.out.println("preanalyze done.");
+
+			ConvertDat convertDat = datFileObj.createConvertDat(null);
+			convertDat.setCsvWriter(new CsvWriter(outDir.getAbsolutePath() + "/" + datFile.getName() + ".csv"));
+			convertDat.createRecordParsers();
+			datFileObj.reset();
+			AnalyzeDatResults results = convertDat.analyze(true);
+
+		} catch (Exception e) {
+			System.err.println("Got error: " + e.getMessage());
+			// showException(e, e.getMessage());
+			e.printStackTrace();
+		}
     }
 
     private void doDatFilesInDir(File iDir, File outDir) {

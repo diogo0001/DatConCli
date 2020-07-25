@@ -204,37 +204,31 @@ public class ConvertDat {
                 RecSpec recInDat = recInDatIter.next();
                 Vector<Record> recordInstVec = getRecordInst(recInDat);
                 if (recordInstVec != null && recordInstVec.size() > 0) {
-                    for (int recordInstVecIndex = 0; recordInstVecIndex < recordInstVec
-                            .size(); recordInstVecIndex++) {
-                        Record recordInst = recordInstVec
-                                .get(recordInstVecIndex);
+                    for (int recordInstVecIndex = 0; recordInstVecIndex < recordInstVec.size(); recordInstVecIndex++) {
+                        Record recordInst = recordInstVec.get(recordInstVecIndex);
                         int recInstLength = recordInst.getLength();
                         if (recInstLength <= recInDat.getLength()) { // recInstLength == -1 means it's a RecType.STRING
                             rcrds.addElement(recordInst);
                             numCreatedParsers++;
-                            DatConLog.Log("Add RecParser #" + numCreatedParsers
-                                    + " " + recordInst.getClassDescription());
+                            System.out.println(
+                                    "Add RecParser #" + numCreatedParsers + " " + recordInst.getClassDescription());
                         } else {
-                            DatConLog.Log(" Wrong length RecParser #"
-                                    + numNoRecParsers + " RecInDat Id/Length ="
-                                    + recInDat.getId() + "/"
-                                    + recInDat.getLength() + " RecInst/length ="
-                                    + recordInst.getName() + "//"
-                                    + recInstLength);
+                            System.out.println(" Wrong length RecParser #" + numNoRecParsers + " RecInDat Id/Length ="
+                                    + recInDat.getId() + "/" + recInDat.getLength() + " RecInst/length ="
+                                    + recordInst.getName() + "//" + recInstLength);
                         }
                     }
                 } else {
                     numNoRecParsers++;
-                    DatConLog.Log("No RecParser #" + numNoRecParsers + " RecId "
-                            + recInDat + "/" + recInDat.getLength());
+                    System.out.println(
+                            "No RecParser #" + numNoRecParsers + " RecId " + recInDat + "/" + recInDat.getLength());
                 }
             }
-            DatConLog.Log(" "); // Separator
-            String
-            msg = "# created parsers:  " + numCreatedParsers;
-            _datCon.showInfo(msg);
+            System.out.println(" "); // Separator
+            String msg = "# created parsers:  " + numCreatedParsers;
+            System.out.println(msg);
             msg = "# NoRec   parsers:  " + numNoRecParsers;
-            _datCon.showInfo(msg);
+            System.out.println(msg);
             // Sort the records by ID
 //            records.sort(new Comparator<Record>() {
 //            	@Override
@@ -264,7 +258,8 @@ public class ConvertDat {
                 records.add(rcrd);
             }
         } catch (Exception e) {
-            DatConLog.Exception(e);
+            System.err.println("exception in createrecordparsers: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -298,7 +293,8 @@ public class ConvertDat {
             }
             csvWriter.print("\n");
         } catch (Exception e) {
-            DatConLog.Exception(e, "ConvertDat error in printCsvLine");
+            System.err.println("ConvertDat error in printCsvLine: " + e.getMessage());
+            e.printStackTrace();
             throw e;
         }
     }

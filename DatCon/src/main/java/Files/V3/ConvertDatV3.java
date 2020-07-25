@@ -56,9 +56,13 @@ public class ConvertDatV3 extends ConvertDat {
         this.printVersion = printVersion;
         final int sampleSize = (int) (_datFile.getClockRate() / sampleRate);
 
+        boolean gotException = false;
         try {
             _datFile.reset();
             // If there is a .csv being produced, go ahead and output the header (first row)
+            if (csvWriter == null) {
+                System.err.println("csvwriter null");
+            }
             if (csvWriter != null) {
                 csvWriter.print("Tick#,offsetTime");
                 printCsvLine(lineType.HEADER);
@@ -112,24 +116,26 @@ public class ConvertDatV3 extends ConvertDat {
             }
         } catch (Corrupted e) {
         	String msg = ".DAT corrupted";
+            gotException = true;
             _datCon.showException(e, msg);
             throw new RuntimeException(msg);	
         } catch (FileEnd e) {
         } catch (Exception e) {
+            gotException = true;
             _datCon.showException(e, null);
         } finally {
             _datFile.close();
 
             String msg = "TotalNumRecExceptions:  " + Record.totalNumRecExceptions;
-            _datCon.showInfo(msg);
-            if (!_datCon.isException()) {
+            System.out.println(msg);
+            if (!gotException) {
 	            double ratio;
 	            ratio = (double) Math.round(_datFile.getErrorRatio(Corrupted.Type.CRC) * 100) / 100;
 	            msg = "CRC   Error Ratio    :  " + ratio;
-	            _datCon.showInfo(msg);
+                System.out.println(msg);
 	            ratio = (double) Math.round(_datFile.getErrorRatio(Corrupted.Type.Other) * 100) / 100;
 	            msg = "Other Error Ratio    :  " + ratio;
-	            _datCon.showInfo(msg);
+                System.out.println(msg);
             }
         }
         return _datFile.getResults();

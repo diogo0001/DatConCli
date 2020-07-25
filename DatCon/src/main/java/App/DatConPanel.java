@@ -142,7 +142,7 @@ public class DatConPanel extends JPanel
 	            }
 	        }
 
-	        createGUI(windowCnt++);
+			// createGUI(windowCnt++);
 	        goButton.setEnabled(false);
 
 	        goButton.setForeground(Color.BLACK);
@@ -286,7 +286,9 @@ public class DatConPanel extends JPanel
 	            checkUpdates.checkForUpdates();
 	        }
 	    } catch (Exception e) {
-	        showException(e, e.getMessage());
+			System.err.println("Got error: " + e.getMessage());
+			// showException(e, e.getMessage());
+			e.printStackTrace();
 	        System.exit(-1);
 	    }
 	}

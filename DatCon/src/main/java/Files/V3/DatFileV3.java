@@ -115,9 +115,12 @@ public class DatFileV3 extends DatFile {
                 if (getByte(startOfRecord) == 0x00) {
                     while (getByte(startOfRecord) == 0x00) {
                         startOfRecord++;
-                        if (startOfRecord > fileLength)
+                        if (startOfRecord > fileLength) {
+
+                            System.err.println("got start of record greater than file length");
                             throw new FileEnd();
                     }
+                }
                 }
                 // if not positioned at next 0x55, then its corrupted
                 if (getByte(startOfRecord) != 0x55) {
@@ -318,7 +321,11 @@ public class DatFileV3 extends DatFile {
             }
         } catch (FileEnd ex) {
         } catch (Corrupted ex) {
+            System.err.println("corrupted exception: " + ex.getMessage());
+            ex.printStackTrace();
         } catch (IOException e) {
+            System.err.println("ioexception exception: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             if (Persist.EXPERIMENTAL_DEV) {
                 printTypes();

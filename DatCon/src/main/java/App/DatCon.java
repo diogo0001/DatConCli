@@ -28,7 +28,8 @@ public class DatCon {
 	private File file1;
 	private boolean isCommandLine = false;
 	private boolean sameDir = false;
-	private boolean wantUI = false;
+  private boolean wantUI = false;
+  private boolean invalidStructOK = false;
 
 	public DatCon(String[] args) {
     	isCommandLine = (args.length > 0);
@@ -76,6 +77,8 @@ public class DatCon {
    						   System.lineSeparator() +
     					   "  -w:    Opens a UI window for each input file." +
    						   System.lineSeparator() +
+                 "  -invalidStructOK:    Allow parsing invalid struct files." +
+                 System.lineSeparator() +
     					   "  -=:    The output directory is the input (parent) directory.");
 	}
 
@@ -112,7 +115,9 @@ public class DatCon {
 			} else
 			if (arg.equals("-=")) {
 				sameDir = true;
-			}
+			} else if (arg.equals("-invalidStructOK")) {
+        invalidStructOK = true;
+      }
 		}
     }
 
@@ -127,6 +132,7 @@ public class DatCon {
         // First set up this strictly-static class (not a good design!)
     	if (datFile != null) {
         	new Persist(datFile, outDir); // Sets up the log file for this .DAT file
+          Persist.invalidStructOK = invalidStructOK;
     	}
 
 		try {
@@ -146,6 +152,7 @@ public class DatCon {
 			System.err.println("Got error: " + e.getMessage());
 			// showException(e, e.getMessage());
 			e.printStackTrace();
+			System.exit(-1);
 		}
     }
 

@@ -113,6 +113,8 @@ public class DatFile {
 
     public void addRecInDat(int type, int length) {
         Integer key = Integer.valueOf(type);
+
+
         if (!recsInDat.containsKey(key)) {
             recsInDat.put(key, new RecSpec(type, length));
         }

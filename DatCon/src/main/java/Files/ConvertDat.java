@@ -199,14 +199,18 @@ public class ConvertDat {
             HashMap<Integer, RecSpec> recsInDat = (HashMap<Integer, RecSpec>) _datFile
                     .getRecsInDat().clone();
 
+            System.out.println("createRecordParsers >>> datfile: "+ _datFile.toString());
+
             Iterator<RecSpec> recInDatIter = recsInDat.values().iterator();
             while (recInDatIter.hasNext()) {
                 RecSpec recInDat = recInDatIter.next();
                 Vector<Record> recordInstVec = getRecordInst(recInDat);
+
                 if (recordInstVec != null && recordInstVec.size() > 0) {
                     for (int recordInstVecIndex = 0; recordInstVecIndex < recordInstVec.size(); recordInstVecIndex++) {
                         Record recordInst = recordInstVec.get(recordInstVecIndex);
                         int recInstLength = recordInst.getLength();
+
                         if (recInstLength <= recInDat.getLength()) { // recInstLength == -1 means it's a RecType.STRING
                             rcrds.addElement(recordInst);
                             numCreatedParsers++;

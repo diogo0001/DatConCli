@@ -769,7 +769,8 @@ public class DatConPanel extends JPanel
 	
 	        try {
 	            datFile = DatFile.createDatFile(iFile.getAbsolutePath(), DatConPanel.this);
-	            if (datFile != null) {
+
+				if (datFile != null) {
 	                datFile.reset();
 	                datFileName = datFile.getFile().getAbsolutePath();
 	                datFileTextField.setText(datFileName);

@@ -13,11 +13,13 @@ import Files.AnalyzeDatResults;
 public class DatCon {
 
 	static public final String version = "3.5.0";
+	// RUN WITH CLI ARGUMENTS
+	// ALT+SHIFT+F10, Right, Edit
 
     /**
      * Main entry point.
      * @param args The arguments, if any.
-     * @see showUsage() method.
+     * see showUsage() method.
      */
     static public void main(String[] args) {
     	new DatCon(args);
@@ -28,13 +30,22 @@ public class DatCon {
 	private File file1;
 	private boolean isCommandLine = false;
 	private boolean sameDir = false;
-  private boolean wantUI = false;
-  private boolean invalidStructOK = false;
+  	private boolean wantUI = false;
+  	private boolean invalidStructOK = false;
 
 	public DatCon(String[] args) {
     	isCommandLine = (args.length > 0);
 		if (isCommandLine) {
 			scanArgs(args);
+
+			// TODO: Criar a  pasta "outputs" aqui
+			if(sameDir || file1 == null){
+				if (file0.isDirectory()){
+					file1 = file0;
+				}else {
+					file1 = new File(file0.getParent());
+				}
+			}
  
 //	    	String dataModel = System.getProperty("sun.arch.data.model");
 //			// Why do we even check this?  It's pretty standard...
@@ -115,14 +126,17 @@ public class DatCon {
 			} else
 			if (arg.equals("-=")) {
 				sameDir = true;
-			} else if (arg.equals("-invalidStructOK")) {
-        invalidStructOK = true;
-      }
+			} else
+			if (arg.equals("-invalidStructOK")) {
+				invalidStructOK = true;
+			}
 		}
     }
 
 //  private DatConPanel datConPanel = null;
     private void doDatFile(File datFile, File outDir) {
+
+
     	// Because of business logic and GUI intertwined,
 		//   only one process and set of SwingWorkers at a time!
 //  	while (datConPanel != null && datConPanel.isWorking()) {
@@ -134,6 +148,9 @@ public class DatCon {
         	new Persist(datFile, outDir); // Sets up the log file for this .DAT file
           Persist.invalidStructOK = invalidStructOK;
     	}
+
+
+    	System.out.println("doDatFile()");
 
 		try {
 			DatFile datFileObj = DatFile.createDatFile(datFile.getAbsolutePath(), null);
@@ -159,10 +176,12 @@ public class DatCon {
     private void doDatFilesInDir(File iDir, File outDir) {
         String[] datNameList = null;
 
-        if (isCommandLine) {
-        	if (sameDir) {
-        		outDir = iDir; // Write to the .DAT file's directory
-        	}
+		System.out.println("doDatFilesInDir()");
+
+		if (isCommandLine) {
+//        	if (sameDir) {
+//        		outDir = iDir; // Write to the .DAT file's directory
+//        	}
         	FilenameFilter filter = new FilenameFilter() {
         		@Override
         		public boolean accept(File dir, String fileName) {
@@ -178,6 +197,8 @@ public class DatCon {
     }
 
     private void doDir(File dir, File outDir) {
+		System.out.println("doDir()");
+
     	doDatFilesInDir(dir, outDir);
 
     	// Do its subdirectories, if any

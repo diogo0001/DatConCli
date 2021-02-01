@@ -51,12 +51,15 @@ public class ConvertDatV3 extends ConvertDat {
     }
 
     public AnalyzeDatResults analyze(boolean printVersion) throws IOException {
+
+        System.out.println("Converting ...");
+
         insertFWDateStr();
         boolean processedPayload = false;
         this.printVersion = printVersion;
         final int sampleSize = (int) (_datFile.getClockRate() / sampleRate);
-
         boolean gotException = false;
+
         try {
             _datFile.reset();
             // If there is a .csv being produced, go ahead and output the header (first row)
@@ -76,6 +79,7 @@ public class ConvertDatV3 extends ConvertDat {
                 long payloadStart = datFileV3._start;
                 int payloadLength = datFileV3._payloadLength;
                 tickNo = _datFile._tickNo;
+
                 if (tickNo > tickRangeUpper) {
                     throw new FileEnd();
                 }
@@ -92,7 +96,7 @@ public class ConvertDatV3 extends ConvertDat {
                                     + rec + " tickNo="
                                     + tickNo + " filePos=" + _datFile.getPos();
                             if (Persist.EXPERIMENTAL_DEV) {
-                                System.out.println(errMsg);
+                                System.err.println(errMsg);
                                 e.printStackTrace();
                             } else {
                                 DatConLog.Exception(e, errMsg);
@@ -104,24 +108,27 @@ public class ConvertDatV3 extends ConvertDat {
                 if (tickRangeLower <= tickNo) {
                     // if some payloads in this tick#Group were processed
                     // then output the .csv line
-                    if ((csvWriter != null) && processedPayload
-                            && tickNo >= lastTickNoPrinted + sampleSize) {
-                        csvWriter.print(tickNo + ","
-                                + _datFile.timeString(tickNo, timeOffset));
+                    if ((csvWriter != null) && processedPayload && tickNo >= lastTickNoPrinted + sampleSize) {
+
+                        csvWriter.print(tickNo + "," + _datFile.timeString(tickNo, timeOffset));
                         printCsvLine(lineType.LINE);
+
                         lastTickNoPrinted = tickNo;
                         processedPayload = true;
+
                     }
                 }
             }
         } catch (Corrupted e) {
         	String msg = ".DAT corrupted";
             gotException = true;
+            System.err.println("Conversion Error!\n"+e.toString());
             _datCon.showException(e, msg);
             throw new RuntimeException(msg);	
         } catch (FileEnd e) {
         } catch (Exception e) {
             gotException = true;
+            System.err.println("Conversion Error!\n"+e.toString());
             _datCon.showException(e, null);
         } finally {
             _datFile.close();
@@ -136,6 +143,10 @@ public class ConvertDatV3 extends ConvertDat {
 	            ratio = (double) Math.round(_datFile.getErrorRatio(Corrupted.Type.Other) * 100) / 100;
 	            msg = "Other Error Ratio    :  " + ratio;
                 System.out.println(msg);
+                System.out.println("Conversion Done!");
+            }
+            else{
+                System.out.println("Conversion Fail!\n");
             }
         }
         return _datFile.getResults();
@@ -152,10 +163,12 @@ public class ConvertDatV3 extends ConvertDat {
         Record rec = null;
         rec = Dictionary.getRecordInst(DatConRecs.String.Dictionary.entries,
                 recInDat, this, true);
+
         if (rec != null) {
             retv.add(rec);
             return retv;
         }
+
         switch (Persist.parsingMode) {
         case DAT_THEN_ENGINEERED:
             rec = getRecordInstFromDat(recInDat);
@@ -203,6 +216,8 @@ public class ConvertDatV3 extends ConvertDat {
         default:
             return retv;
         }
+
+
         return retv;
         //        switch (Persist.parsingMode) {
         //        case DAT_THEN_ENGINEERED:

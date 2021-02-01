@@ -79,8 +79,10 @@ public class Dictionary {
             RecSpec recInDat, ConvertDat convertDat, boolean strictLength) {
         Record retv = null;
         Iterator<RecClassSpec> iter = entries.iterator();
+
         while (iter.hasNext()) {
             RecClassSpec recClassSpec = iter.next();
+
             if (recClassSpec.getId() == recInDat.getId()) {
                 if ((recClassSpec.lengthOK(recInDat.getLength()))
                         || (!strictLength && recClassSpec.getLength() < recInDat
@@ -91,7 +93,9 @@ public class Dictionary {
                             retv = (Record) recordClass
                                     .getConstructor(ConvertDat.class)
                                     .newInstance(convertDat);
+
                             return retv;
+
                         } catch (InstantiationException | IllegalAccessException
                                 | IllegalArgumentException
                                 | InvocationTargetException
@@ -107,6 +111,7 @@ public class Dictionary {
                     DatConLog.Log("getRecordInst can't use " + recClassSpec
                             + "/" + recClassSpec.getLength()
                             + " wrong length RecInDat " + recInDat);
+//                    System.out.println("getRecordInst can't use " + recClassSpec+ "/" + recClassSpec.getLength()+ " wrong length RecInDat " + recInDat);
                 }
             }
         }

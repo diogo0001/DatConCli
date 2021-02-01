@@ -207,8 +207,9 @@ public class RecBatt extends Record {
             printCsvValue(crrnt, currentSig, "current", lineT, valid);
             printCsvValue(totalVolts, voltsSig, "totalVolts", lineT, valid);
             printCsvValue(temp, batteryTempSig, "Temp", lineT, valid);
-            printCsvValue(batteryPercent, battPercent, "battery%", lineT,
-                    valid);
+
+            printCsvValue(batteryPercent, battPercent, "battery%", lineT, valid); // este <<<<<<<<<<<<<<<<<<<<<
+
             printCsvValue(fcc, batteryFCC, "FullChargeCap", lineT, valid);
             printCsvValue(remcap, batteryRemCap, "RemainingCap", lineT, valid);
             printComputedBattCols(lineT);

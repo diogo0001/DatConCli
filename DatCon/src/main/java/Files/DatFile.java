@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.FileSystemNotFoundException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
@@ -114,7 +115,6 @@ public class DatFile {
     public void addRecInDat(int type, int length) {
         Integer key = Integer.valueOf(type);
 
-
         if (!recsInDat.containsKey(key)) {
             recsInDat.put(key, new RecSpec(type, length));
         }
@@ -126,6 +126,9 @@ public class DatFile {
 
     public static DatFile createDatFile(DatConPanel datCon, String datFileName)
             throws NotDatFile, IOException {
+
+        String debug = "";
+
         byte arra[] = new byte[256];
         //if (true )return (new DatFileV3(datFileName));
         DatConLog.Log(" ");
@@ -134,15 +137,25 @@ public class DatFile {
         bfr.read(arra, 0, 256);
         bfr.close();
         String headerString = new String(arra, 16, 26); // Build w/date-time string
+
         if (!headerString.substring(0, 22).startsWith("BUILD ")) {
         	// Let's assume a valid .dat file
+
+            debug += "startsWith(BUILD)";
+
             if (Persist.invalidStructOK) {
                 DatConLog.Log("createDatFile invalid header - proceeding");
                 _datFile = new DatFileV3(datCon, datFileName);
                 _datFile.setStartOfRecords(256);
+
+                debug +=  " >> Persist.invalidStructOK";
+
                 return _datFile;
             }
             if (headerString.substring(0, 4).equals("LOGH")) {
+
+                debug += " >> equals(LOGH)";
+
                 throw new NotDatFile("Probably an encrypted .DAT");
             }
             throw new NotDatFile();
@@ -150,10 +163,16 @@ public class DatFile {
         if ((new String(arra, 242, 10).equals("DJI_LOG_V3"))) {
             _datFile = new DatFileV3(datCon, datFileName);
             _datFile.setStartOfRecords(256);
+            debug += "\nequals(DJI_LOG_V3)";
+
         } else { // Assume version 1
             _datFile = new DatFileV1(datCon, datFileName);
             _datFile.setStartOfRecords(128);
+            debug += "\nequals(DJI_LOG_V1)";
         }
+
+//        System.out.println("createDatFile  >>> debug: "+debug);
+
         return _datFile;
     }
 
@@ -161,8 +180,10 @@ public class DatFile {
             throws NotDatFile, IOException {
         if (DJIAssistantFile.isDJIDat(new File(datFileName))) {
             if (Persist.autoTransDJIAFiles) {
+
                 int lastSlash = datFileName.lastIndexOf("\\");
                 String tempDirName = datFileName.substring(0, lastSlash + 1);
+
                 Color bgColor = datCon.goButton.getBackground();
                 Color fgColor = datCon.goButton.getForeground();
                 boolean enabled = datCon.goButton.isEnabled();
@@ -171,11 +192,16 @@ public class DatFile {
                 datCon.goButton.setForeground(Color.WHITE);
                 datCon.goButton.setEnabled(false);
                 datCon.goButton.setText("Extracting .DAT");
+
                 try {
                     DatConLog.Log("DJIAssistantFile.extractFirst(" + datFileName
                             + ", " + tempDirName + ")");
+
                     DJIAssistantFile.ExtractResult result = DJIAssistantFile
                             .extractFirst(datFileName, tempDirName);
+
+                    System.out.println("result: "+result.toString());
+
                     if (result.moreThanOne()) {
                         //                    if (true) {
                         DatConLog.Log(
@@ -484,6 +510,7 @@ public class DatFile {
         while (iter.hasNext()) {
             RecSpec tst = iter.next();
             DatConLog.Log(tst.getDescription() + " Type " + tst.getId());
+            // System.out.println(tst.getDescription() + " Type " + tst.getId());
         }
     }
 

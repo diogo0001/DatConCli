@@ -394,9 +394,8 @@ public class GoTxt50_12 extends Record {
             printCsvValue(FLYCCOMMAND, flyCCommandSig, "", lineT, valid);
             printCsvValue(FLACTION, flightActionSig, "", lineT, valid);
             printCsvValue(NGPE, nonGPSCauseSig, "", lineT, valid);
-            //printCsvValue("compassError", compassErrorSig, lineT, valid);
-            printCsvValue(ConnectedToRCString, connectedToRCSig, "", lineT,
-                    valid);
+                //printCsvValue("compassError", compassErrorSig, lineT, valid); // ja estava
+            printCsvValue(ConnectedToRCString, connectedToRCSig, "", lineT,valid);
             printCsvValue(LowVoltage, lowVoltageSig, "", lineT, valid);
             printCsvValue(ModeSwitch, rcModeSwitchSig, "", lineT, true);
             printCsvValue(gpsUsedString, gpsUsedSig, "", lineT, valid);

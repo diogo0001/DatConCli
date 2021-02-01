@@ -70,6 +70,7 @@ public abstract class Record extends RecSpec {
 
     public void printCsvValue(Number value, Signal signal, String suffix, lineType lineT, boolean valid)
             throws IOException {
+
         if (lineT == lineType.XML) {
             printXmlSig(signal.getName(), suffix, signal);
             return;
@@ -93,6 +94,7 @@ public abstract class Record extends RecSpec {
 
     protected void printCsvValue(String value, Signal signal, String suffix, lineType lineT, boolean valid)
             throws IOException {
+
         if (lineT == lineType.XML) {
             printXmlSig(signal.getName(), suffix, signal);
             return;
@@ -130,6 +132,7 @@ public abstract class Record extends RecSpec {
     }
 
     protected void printCsvValue(float value, String header, lineType lineT, boolean valid) throws IOException {
+
         if (lineT == lineType.XML)
             return;
         if (lineT == lineType.HEADER) {
@@ -142,6 +145,7 @@ public abstract class Record extends RecSpec {
     }
 
     protected void printCsvValue(String value, String header, lineType lineT, boolean valid) throws IOException {
+
         if (lineT == lineType.HEADER) {
             csvWriter.print("," + header);
         } else {

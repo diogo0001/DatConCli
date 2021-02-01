@@ -3,6 +3,7 @@ package App;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 
 import Files.Persist;
 import Files.DatFile;
@@ -32,6 +33,8 @@ public class DatCon {
 	private boolean sameDir = false;
   	private boolean wantUI = false;
   	private boolean invalidStructOK = false;
+	private boolean runScript = false;
+	private float sampleRate = 10;
 
 	public DatCon(String[] args) {
     	isCommandLine = (args.length > 0);
@@ -50,11 +53,19 @@ public class DatCon {
 //	    	String dataModel = System.getProperty("sun.arch.data.model");
 //			// Why do we even check this?  It's pretty standard...
 //	    	if (dataModel.equals("64")) { // 64-bit arch
-	    		if (file0.isDirectory()) {
-	    			doDir(file0, file1);
-	    		} else {
-	    			doDatFile(file0, file1);
-	    		}
+
+			if (file0.isDirectory()) {
+				doDir(file0, file1);
+			} else {
+				doDatFile(file0, file1);
+			}
+			if(runScript) {
+				// Executar script python aqui
+				System.out.println("Executando script ...");
+			}
+
+
+
 //	    	} else { // 32-bit arch
 //				SwingUtilities.invokeLater(new Runnable() {
 //	           		@Override
@@ -74,7 +85,7 @@ public class DatCon {
     private void showUsage() {
     	System.out.println("Usage:  java -jar DatCon.jar [options...]" +
     					   System.lineSeparator() +
-    					   "  (Requires an installed JRE or JDK.)" +
+    					   "  (Requires an installed JRE or JDK. v8)" +
     					   System.lineSeparator() +
     					   "Options:" +
    						   System.lineSeparator() +
@@ -86,11 +97,11 @@ public class DatCon {
    						   System.lineSeparator() +
     					   "         (If unspecified, same as using the -= option below.)" +
    						   System.lineSeparator() +
-    					   "  -w:    Opens a UI window for each input file." +
-   						   System.lineSeparator() +
-                 "  -invalidStructOK:    Allow parsing invalid struct files." +
-                 System.lineSeparator() +
-    					   "  -=:    The output directory is the input (parent) directory.");
+						   "  -invalidStructOK:    Allow parsing invalid struct files." +
+						   System.lineSeparator() +
+								   "  -=:    The output directory is the input (parent) directory."+
+							System.lineSeparator() +
+							"  -runscript  Execute python script to generate the 'processed.csv' file");
 	}
 
     /**
@@ -129,6 +140,12 @@ public class DatCon {
 			} else
 			if (arg.equals("-invalidStructOK")) {
 				invalidStructOK = true;
+			}else
+			if(arg.equals("-runscript")){
+				runScript = true;
+			}
+			else{
+				System.out.println("Invalid arguments.");
 			}
 		}
     }
@@ -149,34 +166,47 @@ public class DatCon {
           Persist.invalidStructOK = invalidStructOK;
     	}
 
-
-    	System.out.println("doDatFile()");
-
 		try {
 			DatFile datFileObj = DatFile.createDatFile(datFile.getAbsolutePath(), null);
 			// DatFile datFileObj = new DatFile(null, datFile);
-			System.out.println("running preanalyze...");
+
+			String csv = datFile.getName();
+			String[] csvname = csv.split("[.]");
+
+			if(csvname.length > 0){
+				csv = csvname[0];
+			}
+
+			sampleRate = 20;
+
+			System.out.println("\nRunning Preanalyze ...");
 			datFileObj.preAnalyze();
-			System.out.println("preanalyze done.");
+			System.out.println("Preanalyze done!");
 
 			ConvertDat convertDat = datFileObj.createConvertDat(null);
-			convertDat.setCsvWriter(new CsvWriter(outDir.getAbsolutePath() + "/" + datFile.getName() + ".csv"));
+			convertDat.setSampleRate(sampleRate);
+			convertDat.setCsvWriter(new CsvWriter(outDir.getAbsolutePath() + "/" + csv + ".csv"));
 			convertDat.createRecordParsers();
+
 			datFileObj.reset();
+
 			AnalyzeDatResults results = convertDat.analyze(true);
+
+			System.out.println(results.toString());
+			System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+//			System.exit(-1);
 
 		} catch (Exception e) {
 			System.err.println("Got error: " + e.getMessage());
 			// showException(e, e.getMessage());
 			e.printStackTrace();
-			System.exit(-1);
+//			System.exit(-1);
 		}
     }
 
     private void doDatFilesInDir(File iDir, File outDir) {
         String[] datNameList = null;
-
-		System.out.println("doDatFilesInDir()");
 
 		if (isCommandLine) {
 //        	if (sameDir) {
@@ -197,8 +227,6 @@ public class DatCon {
     }
 
     private void doDir(File dir, File outDir) {
-		System.out.println("doDir()");
-
     	doDatFilesInDir(dir, outDir);
 
     	// Do its subdirectories, if any

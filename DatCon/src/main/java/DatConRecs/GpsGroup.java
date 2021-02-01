@@ -134,20 +134,23 @@ public class GpsGroup extends Record {
             printCsvValue(LatP, gpsCoordSig, "Lat", lineT, valid);
             printCsvValue(date, gpsDateTimeSig, "Date", lineT, valid);
             printCsvValue(time, gpsDateTimeSig, "Time", lineT, valid);
-            printCsvValue(dtS, "GPS:dateTimeStamp", lineT, dopValid);
+
+            printCsvValue(dtS, "GPS:dateTimeStamp", lineT, dopValid); // << este  <<<<<<<<<<<<<<<<<<<<<
+
             printCsvValue(heightMSL, gpsHeightMSLSig, "heightMSL", lineT,
                     dopValid);
             printCsvValue(hdop, gpsDopSig, "hDOP", lineT, dopValid);
             printCsvValue(pdop, gpsDopSig, "pDOP", lineT, dopValid);
-            //printCsvValue(hacc, gpsAccSig, "H" , lineT, valid);
+            //printCsvValue(hacc, gpsAccSig, "H" , lineT, valid); // ja estava
             printCsvValue(sacc, gpsAccSig, "sAcc", lineT, dopValid);
-            //printCsvValue(numSV, gpsNumSVSig, "" , lineT, valid);
+            //printCsvValue(numSV, gpsNumSVSig, "" , lineT, valid); // ja estava
             printCsvValue(numGPS, gpsNumSVSig, "numGPS", lineT, valid);
             printCsvValue(numGLN, gpsNumSVSig, "numGLNAS", lineT, valid);
             printCsvValue(numSV, gpsNumSVSig, "numSV", lineT, valid);
             printCsvValue(velN, velocitySig, "velN", lineT, valid);
             printCsvValue(velE, velocitySig, "velE", lineT, valid);
             printCsvValue(velD, velocitySig, "velD", lineT, valid);
+
         } catch (Exception e) {
             DatConLog.Exception(e);
         }

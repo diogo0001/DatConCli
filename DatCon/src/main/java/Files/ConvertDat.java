@@ -49,7 +49,7 @@ public class ConvertDat {
     public long tickNo = 0;
     public long tickRangeLower = 0;
     public long tickRangeUpper = Long.MAX_VALUE;
-    public float sampleRate = (float) 600.0;
+    public float sampleRate = (float) 400.0;
     public long timeOffset = 0;
     public Vector<Record> records = new Vector<Record>();
     public KmlType kmlType = KmlType.NONE;
@@ -95,6 +95,7 @@ public class ConvertDat {
 
     private void printCsvValue(String header, String value, lineType lineT,
             boolean valid) throws IOException {
+
         if (lineT == lineType.HEADER) {
             csvWriter.print("," + header);
         } else {
@@ -186,6 +187,7 @@ public class ConvertDat {
     }
 
     public void setSampleRate(float sampleRate) {
+        System.out.println("Set sample rate: "+sampleRate);
         this.sampleRate = sampleRate;
     }
 
@@ -199,9 +201,8 @@ public class ConvertDat {
             HashMap<Integer, RecSpec> recsInDat = (HashMap<Integer, RecSpec>) _datFile
                     .getRecsInDat().clone();
 
-            System.out.println("createRecordParsers >>> datfile: "+ _datFile.toString());
-
             Iterator<RecSpec> recInDatIter = recsInDat.values().iterator();
+
             while (recInDatIter.hasNext()) {
                 RecSpec recInDat = recInDatIter.next();
                 Vector<Record> recordInstVec = getRecordInst(recInDat);
@@ -212,10 +213,29 @@ public class ConvertDat {
                         int recInstLength = recordInst.getLength();
 
                         if (recInstLength <= recInDat.getLength()) { // recInstLength == -1 means it's a RecType.STRING
-                            rcrds.addElement(recordInst);
-                            numCreatedParsers++;
-                            System.out.println(
-                                    "Add RecParser #" + numCreatedParsers + " " + recordInst.getClassDescription());
+
+                            String recData = recordInst.getClassDescription();
+
+                            if(Persist.parsingMode == Persist.ParsingMode.ENGINEERED_AND_DAT) {
+                                if(recData.contains("GPS") || recData.contains("battery_info")){// || recData.contains("IMU120_2048")){ // para o flightTime
+                                    System.out.println("Created: " + recData);
+                                    rcrds.addElement(recordInst);
+                                    numCreatedParsers++;
+                                }
+                            }else if(Persist.parsingMode == Persist.ParsingMode.JUST_ENGINEERED){
+                                if(recData.contains("GPS") || recData.contains("RecBatt38_5001")) {
+                                    System.out.println("Created: " + recData);
+                                    rcrds.addElement(recordInst);
+                                    numCreatedParsers++;
+                                }
+                            }else{
+                                System.out.println("Created: " + recData);
+                                rcrds.addElement(recordInst);
+                                numCreatedParsers++;
+                            }
+//                                System.out.println("Add RecParser #" + numCreatedParsers + " " + recordInst.getClassDescription());
+//                            }
+                            
                         } else {
                             System.out.println(" Wrong length RecParser #" + numNoRecParsers + " RecInDat Id/Length ="
                                     + recInDat.getId() + "/" + recInDat.getLength() + " RecInst/length ="
@@ -224,15 +244,14 @@ public class ConvertDat {
                     }
                 } else {
                     numNoRecParsers++;
-                    System.out.println(
-                            "No RecParser #" + numNoRecParsers + " RecId " + recInDat + "/" + recInDat.getLength());
+//                    System.out.println("No RecParser #" + numNoRecParsers + " RecId " + recInDat + "/" + recInDat.getLength());
                 }
             }
             System.out.println(" "); // Separator
             String msg = "# created parsers:  " + numCreatedParsers;
-            System.out.println(msg);
+            // System.out.println(msg);
             msg = "# NoRec   parsers:  " + numNoRecParsers;
-            System.out.println(msg);
+            // System.out.println(msg);
             // Sort the records by ID
 //            records.sort(new Comparator<Record>() {
 //            	@Override
@@ -241,12 +260,15 @@ public class ConvertDat {
 //            	}
 //            });
             Iterator<Integer> iter = Dictionary.defaultOrder.iterator();
+
             while (iter.hasNext()) {
-                int recId = iter.next().intValue();
+                int recId = iter.next();
                 Record foundRecord = null;
                 Iterator<Record> recordIter = rcrds.iterator();
+
                 while (recordIter.hasNext()) {
                     Record rcrd = recordIter.next();
+
                     if (rcrd.getId() == recId && !(rcrd instanceof RecordDef)) {
                         records.add(rcrd);
                         foundRecord = rcrd;
@@ -276,6 +298,7 @@ public class ConvertDat {
     }
 
     protected void printCsvLine(lineType lineT) throws Exception {
+
         try {
             for (int i = 0; i < records.size(); i++) {
                 records.get(i).printCols(lineT);
@@ -283,8 +306,8 @@ public class ConvertDat {
             if (lineT == lineType.HEADER) {
                 csvWriter.print(",Attribute|Value");
                 if (printVersion) {
-                    printCsvValue(this.getClass().getSimpleName(), "", lineT,
-                            false);
+                    printCsvValue(this.getClass().getSimpleName(), "", lineT,false);
+
                     if (_datFile.isTablet()) {
                         printCsvValue(DatCon.version + "-Tablet", "", lineT,
                                 false);
@@ -428,7 +451,7 @@ public class ConvertDat {
         csvWriter.println("</timeAxis>");
     }
 
-    public HashSet<Axis> axes = new HashSet<Axis>();
+    public HashSet<Axis> axes = new HashSet<>();
 
     public void createXMLGuts() throws IOException {
         axes.clear();

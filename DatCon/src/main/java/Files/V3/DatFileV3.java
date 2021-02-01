@@ -116,7 +116,6 @@ public class DatFileV3 extends DatFile {
                     while (getByte(startOfRecord) == 0x00) {
                         startOfRecord++;
                         if (startOfRecord > fileLength) {
-
                             System.err.println("got start of record greater than file length");
                             throw new FileEnd();
                     }
@@ -155,6 +154,7 @@ public class DatFileV3 extends DatFile {
                 //                            + (double) thisRecordTickNo / (double) getPos());
                 //                }
                 numRecs++;
+
                 if (always0 != 0) {
                     throw new Corrupted(thisRecordTickNo, startOfRecord + 1);
                 }
@@ -259,6 +259,9 @@ public class DatFileV3 extends DatFile {
     @Override
     public void preAnalyze() throws NotDatFile {
         super.preAnalyze();
+
+        String debug = "";
+
         try {
             reset();
             clearRecsInDat();
@@ -269,11 +272,13 @@ public class DatFileV3 extends DatFile {
                 }
                 //                getNextDatRec(true, true, true, true);
                 getNextDatRec(true, true, true, false);
+
                 if (_type == 0XFFFD) {
                     Payload xorBB = new Payload(this, _start, _payloadLength,
                             _type, _tickNo);
                     String payloadString = xorBB.getAsString();
                     String lines[] = payloadString.split("\\n");
+
                     for (int i = 0; i < lines.length; i++) {
                         opLines.add(new OpConfig.Line(lines[i]));
                     }
@@ -290,8 +295,7 @@ public class DatFileV3 extends DatFile {
                     Payload xorBB = new Payload(this, _start, _payloadLength,
                             _type, tickNo);
                     String payloadString = xorBB.getString();
-                    if (firstMotorStartTick == 0 && payloadString
-                            .indexOf("[L-FMU/MOTOR]Start.") > -1) {
+                    if (firstMotorStartTick == 0 && payloadString.contains("[L-FMU/MOTOR]Start.")) {
                         firstMotorStartTick = tickNo;
                     }
                     if (payloadString.indexOf("[L-FMU/MOTOR] Stop.") > -1) {

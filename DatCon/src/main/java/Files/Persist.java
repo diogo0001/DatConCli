@@ -34,8 +34,8 @@ public class Persist {
     public static boolean EXPERIMENTAL_FIELDS = false;
     public static boolean autoTransDJIAFiles = true;
     public static boolean loadLastOnStartup = false;
-    public static boolean showNewVerAvail = true;
-    public static boolean checkUpdts = true;
+    public static boolean showNewVerAvail = false;
+    public static boolean checkUpdts = false;
     public static String inputFileName = "";
     public static String outputDirName = "";
     public static boolean EXPERIMENTAL_DEV = false;
@@ -43,8 +43,8 @@ public class Persist {
     public static boolean inertialOnlyCalcs = false;
     public static boolean magCalcs = false;
     public static boolean airComp = false;
-    public static boolean invalidStructOK = false;
-    static public ParsingMode parsingMode = ParsingMode.JUST_ENGINEERED;
+    public static boolean invalidStructOK = true;
+    static public ParsingMode parsingMode = ParsingMode.ENGINEERED_AND_DAT;
     public static Dimension datConSize = new Dimension(900, 950);
     public static int csvSampleRate = 30;
     public static boolean logPanelEFB = false;
@@ -58,6 +58,7 @@ public class Persist {
         DAT_THEN_ENGINEERED,
         ENGINEERED_THEN_DAT,
         ENGINEERED_AND_DAT,
+        NONE
     };
 
     public Persist(File inFile, File outFile) {
@@ -73,7 +74,7 @@ public class Persist {
         	fileName = outFile.getAbsolutePath() + "/.datcon-" + inFile.getName() + ".log";
         }
     	persistenceFile = new File(fileName);
-        load();
+//        load();
     }
 
     public static void save() {

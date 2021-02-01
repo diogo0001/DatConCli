@@ -312,6 +312,7 @@ public class RecIMU extends Record {
 
     @Override
     public void printCols(lineType lineT) {
+
         try {
             if (lineT == lineType.HEADER)
                 notFirstLine = false;

@@ -155,6 +155,8 @@ public class Record_2048 extends Record {
     @Override
     public void process(Payload _payload) {
         super.process(_payload);
+        System.out.println("process Record_2048");
+
         valid = true;
         longRad = payloadBB.getDouble(0);
         latRad = payloadBB.getDouble(8);

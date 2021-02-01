@@ -27,7 +27,7 @@ public class IMU120_2048 extends RecIMU {
         try {
             if (GoTxt50_12.current != null) {
                 printCsvValue(GoTxt50_12.current.flightTime, flightTimeSig, "",
-                        lineT, GoTxt50_12.current.valid);
+                        lineT, GoTxt50_12.current.valid);       // este <<<<<<<<<<<<<<<<<<<<< ??????????
             }
 
             if (GoTxt50_12.current != null) {

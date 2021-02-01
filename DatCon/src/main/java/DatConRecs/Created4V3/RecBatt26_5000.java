@@ -115,6 +115,8 @@ public class RecBatt26_5000 extends RecBatt {
             //            printCsvValue(fcc, batteryFCC, "", lineT, valid);
             //            printCsvValue(remcap, batteryRemCap, "", lineT, valid);
             //            printCsvValue(temp, batteryTempSig, "", lineT, valid);
+
+
             printCsvValue(status1, statusSig, "status1", lineT, true);
             printCsvValue(status2, statusSig, "status2", lineT, true);
             printCsvValue(status3, statusSig, "status3", lineT, true);

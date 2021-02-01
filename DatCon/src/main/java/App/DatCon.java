@@ -3,6 +3,7 @@ package App;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import Files.Persist;
@@ -43,10 +44,22 @@ public class DatCon {
 
 			// TODO: Criar a  pasta "outputs" aqui
 			if(sameDir || file1 == null){
-				if (file0.isDirectory()){
-					file1 = file0;
-				}else {
-					file1 = new File(file0.getParent());
+				if(!sameDir){
+					if (file0.isDirectory()){
+						file1 = file0;
+					} else {
+						file1 = new File(file0.getParent());
+					}
+				} else {
+					String output = file0.getParent()+"\\output";
+					file1 = new File(output);
+					if(!file1.exists()){
+						file1.mkdir();
+						System.out.println("Output folder created: "+output);
+					}else{
+						System.out.println("Output folder: "+output);
+					}
+
 				}
 			}
  

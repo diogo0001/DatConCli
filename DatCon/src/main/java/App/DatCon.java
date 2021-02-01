@@ -34,7 +34,7 @@ public class DatCon {
   	private boolean wantUI = false;
   	private boolean invalidStructOK = false;
 	private boolean runScript = false;
-	private float sampleRate = 10;
+	private float sampleRate = 20;
 
 	public DatCon(String[] args) {
     	isCommandLine = (args.length > 0);
@@ -54,17 +54,19 @@ public class DatCon {
 //			// Why do we even check this?  It's pretty standard...
 //	    	if (dataModel.equals("64")) { // 64-bit arch
 
-			if (file0.isDirectory()) {
-				doDir(file0, file1);
-			} else {
-				doDatFile(file0, file1);
+			try {
+				if (file0.isDirectory()) {
+					doDir(file0, file1);
+				} else {
+					doDatFile(file0, file1);
+				}
+				if (runScript) {
+					// Executar script python aqui
+					System.out.println("Executando script ...");
+				}
+			}catch (Exception e){
+				System.err.println("Got error: " + e.getMessage());
 			}
-			if(runScript) {
-				// Executar script python aqui
-				System.out.println("Executando script ...");
-			}
-
-
 
 //	    	} else { // 32-bit arch
 //				SwingUtilities.invokeLater(new Runnable() {
@@ -89,19 +91,21 @@ public class DatCon {
     					   System.lineSeparator() +
     					   "Options:" +
    						   System.lineSeparator() +
-    					   "  -i x:  x specifies the input file system path." +
+    					   "  -i <x>:  <x> specifies the input file system path." +
    						   System.lineSeparator() +
     					   "         Can be a file path (single) or directory path (multiple)." +
    						   System.lineSeparator() +
-    					   "  -o y:  y specifies the output directory path." +
+    					   "  -o <y>:  <y> specifies the output directory path." +
    						   System.lineSeparator() +
     					   "         (If unspecified, same as using the -= option below.)" +
    						   System.lineSeparator() +
 						   "  -invalidStructOK:    Allow parsing invalid struct files." +
 						   System.lineSeparator() +
 								   "  -=:    The output directory is the input (parent) directory."+
-							System.lineSeparator() +
-							"  -runscript  Execute python script to generate the 'processed.csv' file");
+						   System.lineSeparator() +
+						   "  -s: <sample rate>   Sample rate of log ticks - Defaut: 20 Hz"+
+				           System.lineSeparator() +
+				           "  -runscript  Execute python script to generate the 'processed.csv' file");
 	}
 
     /**
@@ -143,6 +147,15 @@ public class DatCon {
 			}else
 			if(arg.equals("-runscript")){
 				runScript = true;
+			}else
+			if(arg.equals("-s")){
+				int index = ++i;
+				if(index<args.length) {
+					sampleRate = Float.parseFloat(args[index]);
+				}
+				else{
+					System.out.println("Invalid sample rate");
+				}
 			}
 			else{
 				System.out.println("Invalid arguments.");
@@ -152,7 +165,6 @@ public class DatCon {
 
 //  private DatConPanel datConPanel = null;
     private void doDatFile(File datFile, File outDir) {
-
 
     	// Because of business logic and GUI intertwined,
 		//   only one process and set of SwingWorkers at a time!
@@ -177,8 +189,6 @@ public class DatCon {
 				csv = csvname[0];
 			}
 
-			sampleRate = 20;
-
 			System.out.println("\nRunning Preanalyze ...");
 			datFileObj.preAnalyze();
 			System.out.println("Preanalyze done!");
@@ -192,15 +202,16 @@ public class DatCon {
 
 			AnalyzeDatResults results = convertDat.analyze(true);
 
-			System.out.println(results.toString());
 			System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 //			System.exit(-1);
 
 		} catch (Exception e) {
-			System.err.println("Got error: " + e.getMessage());
+			System.err.println("File conversion error: " + e.getMessage()+"\nFile: "+datFile.getName());
 			// showException(e, e.getMessage());
 			e.printStackTrace();
+
+			System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 //			System.exit(-1);
 		}
     }

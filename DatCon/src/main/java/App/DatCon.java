@@ -1,8 +1,6 @@
 package App;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.Arrays;
 
@@ -26,7 +24,6 @@ public class DatCon {
     static public void main(String[] args) {
     	new DatCon(args);
     }
-
     // Instance variables
 	private File file0;
 	private File file1;
@@ -44,28 +41,24 @@ public class DatCon {
 
 			// TODO: Criar a  pasta "outputs" aqui
 			if(sameDir || file1 == null){
-				if(!sameDir){
+//				if(!sameDir){
 					if (file0.isDirectory()){
 						file1 = file0;
 					} else {
 						file1 = new File(file0.getParent());
 					}
-				} else {
-					String output = file0.getParent()+"\\output";
-					file1 = new File(output);
-					if(!file1.exists()){
-						file1.mkdir();
-						System.out.println("Output folder created: "+output);
-					}else{
-						System.out.println("Output folder: "+output);
-					}
+//				} else {
+//					String output = file0.getParent()+"\\output";
+//					file1 = new File(output);
+//					if(!file1.exists()){
+//						file1.mkdir();
+//						System.out.println("Output folder created: "+output);
+//					}else{
+//						System.out.println("Output folder: "+output);
+//					}
 
-				}
+//				}
 			}
- 
-//	    	String dataModel = System.getProperty("sun.arch.data.model");
-//			// Why do we even check this?  It's pretty standard...
-//	    	if (dataModel.equals("64")) { // 64-bit arch
 
 			try {
 				if (file0.isDirectory()) {
@@ -73,22 +66,32 @@ public class DatCon {
 				} else {
 					doDatFile(file0, file1);
 				}
-				if (runScript) {
-					// Executar script python aqui
-					System.out.println("Executando script ...");
-				}
 			}catch (Exception e){
-				System.err.println("Got error: " + e.getMessage());
+				System.err.println("Conversion errors: " + e.getMessage());
 			}
 
-//	    	} else { // 32-bit arch
-//				SwingUtilities.invokeLater(new Runnable() {
-//	           		@Override
-//	            	public void run() {
-//	                	DataModelDialog.createAndShowDataModelDialog();
-//	            	}
-//	        	});
-//	    	}
+			// todo: timeout
+			if (runScript) {
+				try {
+					System.out.println("Executando script ...");
+					// Executar script python aqui
+
+					String[] cmd = {"python", file0.getParent()+"\\datlog_data.py",file1.toString()};
+
+					Process process = Runtime.getRuntime().exec(cmd);
+					BufferedReader read = new BufferedReader(new InputStreamReader(process.getInputStream()));
+					String bufferStr = null;
+
+					while ((bufferStr = read.readLine()) != null) {
+						System.out.println(bufferStr);
+					}
+					System.out.println("Script finished.");
+				} catch (Exception e){
+					System.out.println("Script error!");
+					e.printStackTrace();
+				}
+			}
+
 		} else { // "Normal" DatCon
 			doDatFile(null, null);
 		}
@@ -202,7 +205,8 @@ public class DatCon {
 				csv = csvname[0];
 			}
 
-			System.out.println("\nRunning Preanalyze ...");
+			System.out.println("\nFile: "+datFile.getName());
+			System.out.println("Running Preanalyze ...");
 			datFileObj.preAnalyze();
 			System.out.println("Preanalyze done!");
 

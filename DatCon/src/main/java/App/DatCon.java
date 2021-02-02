@@ -73,10 +73,19 @@ public class DatCon {
 			// todo: timeout
 			if (runScript) {
 				try {
-					System.out.println("Executando script ...");
+					System.out.println("Running script ...");
 					// Executar script python aqui
 
-					String[] cmd = {"python", file0.getParent()+"\\datlog_data.py",file1.toString()};
+
+					String scriptFolder = file0.getParent();
+					if(file0.isDirectory()){
+						scriptFolder = file0.toString();
+					}
+
+					System.out.println(scriptFolder+"\n"+file1.toString());
+
+
+					String[] cmd = {"python", scriptFolder+"\\datlog_data.py",file1.toString()};
 
 					Process process = Runtime.getRuntime().exec(cmd);
 					BufferedReader read = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -85,9 +94,9 @@ public class DatCon {
 					while ((bufferStr = read.readLine()) != null) {
 						System.out.println(bufferStr);
 					}
-					System.out.println("Script finished.");
+					System.out.println("\nScript finished.");
 				} catch (Exception e){
-					System.out.println("Script error!");
+					System.out.println("\nRun script error!");
 					e.printStackTrace();
 				}
 			}
@@ -107,19 +116,19 @@ public class DatCon {
     					   System.lineSeparator() +
     					   "Options:" +
    						   System.lineSeparator() +
-    					   "  -i <x>:  <x> specifies the input file system path." +
+    					   "  -i <x>:\\t<x> specifies the input file system path." +
    						   System.lineSeparator() +
     					   "         Can be a file path (single) or directory path (multiple)." +
    						   System.lineSeparator() +
-    					   "  -o <y>:  <y> specifies the output directory path." +
+    					   "  -o <y>:\\t<y> specifies the output directory path." +
    						   System.lineSeparator() +
     					   "         (If unspecified, same as using the -= option below.)" +
    						   System.lineSeparator() +
 						   "  -invalidStructOK:    Allow parsing invalid struct files." +
 						   System.lineSeparator() +
-								   "  -=:    The output directory is the input (parent) directory."+
+				           "  -=:\\tThe output directory is the input (parent) directory."+
 						   System.lineSeparator() +
-						   "  -s: <sample rate>   Sample rate of log ticks - Defaut: 20 Hz"+
+						   "  -s <sample rate>: Sample rate of log ticks - Defaut: 20 Hz"+
 				           System.lineSeparator() +
 				           "  -runscript  Execute python script to generate the 'processed.csv' file");
 	}

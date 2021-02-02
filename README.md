@@ -41,7 +41,7 @@ Este comando executa o programa DatConCli.jar, com os seguintes parâmetros:
 -runscript =>executa o script em python que processa os arquivos .csv (este deve ser colocado na mesma pasta do input -i)
 ```
 
-### Outros comandos
+### Outros parâmetros
 ```txt
 -o  <path>  => especifica pasta para o output
 -s  <valor> => sample rate dos ticks dos .DAT (default está como 20 Hz, este aumenta a quantidade de linhas, original é 600 Hz)

@@ -35,15 +35,15 @@ java -jar <path to DatConCli.jar> -i <path to .DAT or dir> -= -runscript
   
 Este comando executa o programa DatConCli.jar, com os seguintes parâmetros:
 
-```bash
+```txt
 -i => log específico ou pasta com os logs
 -= => salva os arquivos convertidos na mesma pasta do arquivo original
 -runscript =>executa o script em python que processa os arquivos .csv (este deve ser colocado na mesma pasta do input -i)
 ```
 
 ### Outros comandos
-```bash
+```txt
 -o  <path>  => especifica pasta para o output
--s  <valor> => sample rate dos ticks dos .DAT (default está como 20 Hz, este aumenta aquantidade de linhas e tamanho do arquivo, original é 600 Hz)
+-s  <valor> => sample rate dos ticks dos .DAT (default está como 20 Hz, este aumenta a quantidade de linhas, original é 600 Hz)
 -h => help
 ```

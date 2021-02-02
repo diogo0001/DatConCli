@@ -2,7 +2,7 @@
 
 ## Objetivo do Projeto
 
-Para realizar a conversão dos logs de voo (arquivosDAT), é necessário utilizar o software ([DatCon](https://datfile.net/DatCon/intro.html)). No entando, o software perminte a conversão de apenas um arquivo por vez. Para automatizar a tarefa e converter grande volume de arquivos em um só comando, busca-se modificar o programa, para que, com uma linha de comando, sejam convertidos todos os arquivos dentro de uma pasta desejada.
+Para realizar a conversão dos logs de voo (arquivos.DAT), é necessário utilizar o software ([DatCon](https://datfile.net/DatCon/intro.html)). No entando, o software perminte a conversão de apenas um arquivo por vez. Para automatizar a tarefa e converter grande volume de arquivos em um só comando, busca-se modificar o programa, para que, com uma linha de comando, sejam convertidos todos os arquivos dentro de uma pasta desejada.
 
 A partir do repositório de referência clonado:
 
@@ -10,7 +10,7 @@ https://github.com/winstona/DatCon-1
 
 - Compilar e executar o projeto
 - Criar o executável .jar para release
-- Converter todos os .DAT de determinada pasta e subpastas de uma vez, gerando os respectivos .csv
+- Adaptar e tratar o programa para converter todos os .DAT de determinada pasta e subpastas de uma vez, gerando os respectivos .csv
 - Executar o script em python (embedded) que gera o csv  processado de todos os logs em um único arquivo, com os seguintes dados:
    - Porcentagem de bateria
    - Timestamp

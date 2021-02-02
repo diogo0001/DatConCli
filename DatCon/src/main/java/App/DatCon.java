@@ -33,6 +33,7 @@ public class DatCon {
   	private boolean invalidStructOK = false;
 	private boolean runScript = false;
 	private float sampleRate = 20;
+	private float totalExcecTime = 0;
 
 	public DatCon(String[] args) {
     	isCommandLine = (args.length > 0);
@@ -69,6 +70,8 @@ public class DatCon {
 			}catch (Exception e){
 				System.err.println("Conversion errors: " + e.getMessage());
 			}
+
+			System.out.println("Total excecution time: "+ totalExcecTime+" s\n");
 
 			// todo: timeout
 			if (runScript) {
@@ -203,6 +206,8 @@ public class DatCon {
           Persist.invalidStructOK = invalidStructOK;
     	}
 
+		long startTime = System.currentTimeMillis();
+
 		try {
 			DatFile datFileObj = DatFile.createDatFile(datFile.getAbsolutePath(), null);
 			// DatFile datFileObj = new DatFile(null, datFile);
@@ -228,8 +233,6 @@ public class DatCon {
 
 			AnalyzeDatResults results = convertDat.analyze(true);
 
-			System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
 //			System.exit(-1);
 
 		} catch (Exception e) {
@@ -237,10 +240,14 @@ public class DatCon {
 			// showException(e, e.getMessage());
 			e.printStackTrace();
 
-			System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 //			System.exit(-1);
 		}
-    }
+
+		long endTime = System.currentTimeMillis();
+		totalExcecTime += (endTime - startTime)/1000.0;
+		System.out.println("Excecution time: "+(endTime - startTime)/1000.0 +" s");
+		System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	}
 
     private void doDatFilesInDir(File iDir, File outDir) {
         String[] datNameList = null;
